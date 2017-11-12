@@ -1,29 +1,20 @@
 package com.svetlanamarhefka.view;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.NumberPicker;
-import android.widget.TextView;
-
-import com.svetlanamarhefka.R;
 
 /****************************************************************
- * Name:    Svetlana Marhefka                                             *
+ * Name:    Svetlana Marhefka                                   *
  * Project: Project 2 - Longana                                 *
  * Class:   CMPS 366 Organization of Programming Languages (OPL)* 
- * Date:    11/11/2017                                             *
+ * Date:    11/11/2017                                          *
+ * NOTE:    THIS CLASS IS NOT CURRENTLY BEING USED              *
  ****************************************************************/
 
 public class GameInfo extends Activity {
 
+    /*
     private int m_TourScore;
     private String m_UserName;
-
     private NumberPicker m_PickNumber;
     private EditText m_UserText;
 
@@ -118,4 +109,5 @@ public class GameInfo extends Activity {
             NameWarning();
         }
     }
+    */
 }

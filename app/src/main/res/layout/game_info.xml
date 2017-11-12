@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/more_info"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:maxHeight="800dp"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:paddingTop="15dp"
@@ -18,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/ask_score"
-        android:textSize="30sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,23 +26,21 @@
 
     <NumberPicker
         android:id="@+id/userNumber"
-        android:layout_width="0dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/q_tourScore"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/q_tourScore"
-        tools:scaleX="2"
-        tools:scaleY="1.5" />
+        app:layout_constraintTop_toBottomOf="@+id/q_tourScore" />
 
     <TextView
         android:id="@+id/q_userName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="50dp"
         android:text="@string/ask_name"
-        android:textSize="30sp"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userNumber"
@@ -53,16 +50,18 @@
         android:id="@+id/userName"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:labelFor="@id/userName"
         android:singleLine="true"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/q_userName" />
 
+    <!-- This may be used again...
     <Button
         android:id="@+id/startGame"
         android:layout_width="wrap_content"
@@ -75,5 +74,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userName" />
+    -->
 
 </android.support.constraint.ConstraintLayout>
