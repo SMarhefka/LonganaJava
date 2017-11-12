@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Longana</string>
+    <string name="ask_score">What score would you like to play up to?</string>
+    <string name="ask_name">
+        What name would you like to use?
+        \nNote: If left blank the name will automatically become "Human"
+    </string>
+    <string name="start_game">SO READY TO PLAY!</string>
+    <string name="invalid_score">ERROR: The tournament score has to be GREATER than 0\n</string>
 </resources>

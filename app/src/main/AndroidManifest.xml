@@ -16,11 +16,21 @@
             android:theme="@style/StartScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- Game Information Screen Activity -->
+        <activity
+            android:name=".view.GameInfo"
+            android:theme="@style/InfoScreen">
+        </activity>
+
+        <!-- Main Game Screen Activity -->
+        <activity
+            android:name=".view.MainGame"
+            android:theme="@style/MainScreen">
+        </activity>
 
     </application>
 

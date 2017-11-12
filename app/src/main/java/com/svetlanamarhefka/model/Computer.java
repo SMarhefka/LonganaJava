@@ -7,4 +7,12 @@ package com.svetlanamarhefka.model;
  * Date:    11/11/2017                                          *
  ****************************************************************/
 public class Computer extends Player {
+    /**
+     * Default constructor.
+     */
+    public Computer()
+    {
+        // Give the computer its name.
+        this.playerName = "Computer";
+    }
 }

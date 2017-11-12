@@ -7,4 +7,16 @@ package com.svetlanamarhefka.model;
  * Date:    11/11/2017                                          *
  ****************************************************************/
 public class Player {
+
+    // The name of the player.
+    protected String playerName;
+
+    /**
+     * Returns the name of the player.
+     * @return a string containing the name of the player
+     */
+    public String getPlayerName()
+    {
+        return playerName;
+    }
 }

@@ -5,8 +5,18 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <!-- Base application theme. -->
+    <!-- Start Screen theme. -->
     <style name="StartScreen" parent="android:Theme.Holo.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Main gameplay theme. -->
+    <style name="InfoScreen" parent="android:Theme.Holo.Light.Dialog">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Main gameplay theme. -->
+    <style name="MainScreen" parent="android:Theme.Holo.Light.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
 </resources>
