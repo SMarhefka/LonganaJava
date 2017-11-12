@@ -1,8 +1,11 @@
 package com.svetlanamarhefka.model;
 
-/**
- * Created by Svetlana Marhefka on 11/6/2017.
- */
+/****************************************************************
+ * Name:    Svetlana Marhefka                                   *
+ * Project: Project 2 - Longana                                 *
+ * Class:   CMPS 366 Organization of Programming Languages (OPL)*
+ * Date:    11/06/2017                                          *
+ ****************************************************************/
 
 public class Human extends Player {
     /**
