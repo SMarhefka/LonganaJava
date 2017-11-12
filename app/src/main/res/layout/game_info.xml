@@ -6,41 +6,42 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:maxHeight="800dp"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
     android:paddingTop="15dp"
     android:visibility="visible"
     tools:context="com.svetlanamarhefka.view.GameInfo">
 
     <TextView
         android:id="@+id/q_tourScore"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/ask_score"
         android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.05" />
 
     <NumberPicker
         android:id="@+id/userNumber"
         android:layout_width="0dp"
-        android:layout_height="175dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/q_tourScore"
-        android:background="#0000"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/q_tourScore"
-        app:layout_constraintVertical_bias="0.032" />
+        tools:scaleX="2"
+        tools:scaleY="1.5" />
 
     <TextView
         android:id="@+id/q_userName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="55dp"
         android:text="@string/ask_name"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +53,7 @@
         android:id="@+id/userName"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:labelFor="@id/userName"
@@ -68,7 +69,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:onClick="startGameClick"
-        android:text="string"
+        android:text="@string/start_game"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
