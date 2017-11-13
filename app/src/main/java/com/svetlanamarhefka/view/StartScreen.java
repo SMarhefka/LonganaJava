@@ -86,7 +86,7 @@ public class StartScreen extends Activity {
                 }
                 else
                 {
-                    txtView.setTextColor(Color.parseColor("Black"));
+                    txtView.setTextColor(Color.parseColor("White"));
                     txtView.setText(R.string.ask_score);
                 }
             }

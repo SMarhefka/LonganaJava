@@ -9,17 +9,46 @@ package com.svetlanamarhefka.model;
 
 public class Tournament {
     // Integers containing the amount of wins for each player.
-    private int humanWins;
-    private int computerWins;
+    private int m_TourScore;
+    private int m_RoundNumber;
 
     // GUI components... later.
 
     /**
-     * Default constructor, which initializes the amount of times each player won.
-     */
+    * MAY NOT NEED TO USE THIS...
+    * Default constructor
+    *
     public Tournament()
     {
-        this.humanWins = 0;
-        this.computerWins = 0;
+        this.m_TourScore = 0;
+        this.m_RoundNumber = 0;
     }
+    */
+
+    public Tournament(int a_TourScore, int a_RoundNumber)
+    {
+        this.m_TourScore = a_TourScore;
+        this.m_RoundNumber = a_RoundNumber;
+    }
+
+    public int getRound()
+    {
+        return m_RoundNumber;
+    }
+
+    public int getTourScore()
+    {
+        return m_TourScore;
+    }
+
+    /*
+    public void main(String args[])
+    {
+        System.out.println("\n" +
+                "----------------------------------Tournament Test-------------------------------");
+        Tournament tourTest = new Tournament(150, 1);
+        System.out.println("Tournament Score: " + String.valueOf(getTourScore()));
+        System.out.println("Round Number: " + String.valueOf(getRound()));
+    }
+    */
 }
