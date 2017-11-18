@@ -1,6 +1,17 @@
 package com.svetlanamarhefka.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.TextView;
+
+import com.svetlanamarhefka.R;
 
 /****************************************************************
  * Name:    Svetlana Marhefka                                   *
@@ -12,7 +23,6 @@ import android.app.Activity;
 
 public class GameInfo extends Activity {
 
-    /*
     private int m_TourScore;
     private String m_UserName;
     private NumberPicker m_PickNumber;
@@ -21,11 +31,14 @@ public class GameInfo extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent startIntent = getIntent();
+
         setContentView(R.layout.game_info);
 
         //Get the widgets reference from XML layout
         final TextView txtView = findViewById(R.id.q_tourScore);
-        final NumberPicker myNumPicker = findViewById(R.id.userNumber);
+        final NumberPicker myNumPicker = findViewById(R.id.a_tourScore);
 
         //Populate NumberPicker values from minimum and maximum value range
         //Set the minimum value of NumberPicker
@@ -40,20 +53,50 @@ public class GameInfo extends Activity {
         myNumPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+
                 //Display the newly selected number from picker
                 if(newVal > 0)
                 {
                     //Set TextView text color
                     txtView.setTextColor(Color.parseColor("#ffd32b3b"));
-                    txtView.setText("Play until: " + newVal);
+                    txtView.setText("Tournament Will End On/After: " + newVal + " Points");
                 }
                 else
                 {
-                    txtView.setTextColor(Color.parseColor("Black"));
+                    txtView.setTextColor(Color.parseColor("White"));
                     txtView.setText(R.string.ask_score);
                 }
             }
         });
+    }
+
+    public void startGameClick(View view)
+    {
+        System.out.print("I've been clicked!\n");
+
+        m_PickNumber = findViewById(R.id.a_tourScore);
+        m_UserText = findViewById(R.id.a_userName);
+
+        if(m_PickNumber.getValue() == 0)
+        {
+            System.out.print("Issue with the score!\n");
+            ScoreWarning();
+        }
+        else if(m_UserText.getText().toString().isEmpty())
+        {
+            System.out.print("Name warning called!\n");
+            NameWarning();
+        }
+        else
+        {
+            System.out.print("Score and Name Filled Out...Ready To Start Game\n");
+            m_TourScore = m_PickNumber.getValue();
+            m_UserName = m_UserText.getText().toString();
+
+            Intent intent = new Intent(this, MainGame.class);
+            intent.putExtra("EXTRA_NEWGAME", true);
+            startActivity(intent);
+        }
     }
 
     private void NameWarning()
@@ -89,25 +132,5 @@ public class GameInfo extends Activity {
         alertDialog.create().show();
     }
 
-    public void startGameClick(View view)
-    {
-        System.out.print("I've been clicked!\n");
-        m_PickNumber = findViewById(R.id.userNumber);
-        m_UserText = findViewById(R.id.userName);
 
-        if(m_PickNumber.getValue() > 0 && !(m_UserText.getText().toString().isEmpty()))
-        {
-            m_TourScore = m_PickNumber.getValue();
-            m_UserName = m_UserText.getText().toString();
-        }
-        else if(m_PickNumber.getValue() == 0)
-        {
-            ScoreWarning();
-        }
-        else if(m_UserText.getText().toString().isEmpty())
-        {
-            NameWarning();
-        }
-    }
-    */
 }

@@ -126,6 +126,7 @@ public class Hand {
      * Main method to test the methods in hand
      * @param args --> any arguement parameters
      */
+    /*
     public static void main(String[] args)
     {
         System.out.println("\n" +
@@ -158,4 +159,5 @@ public class Hand {
 
         System.out.println("Has Engine: " + t_HandTest.hasEngine(3));
     }
+    */
 }

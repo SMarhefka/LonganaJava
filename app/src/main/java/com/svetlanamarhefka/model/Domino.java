@@ -1,15 +1,15 @@
 package com.svetlanamarhefka.model;
 
+/*
+ * This is the domino class.  Its main purpose is to manipulate a domino tile
+ */
+
 /********************************************************************
  * Name:    Svetlana Marhefka										*
  * Project: Project 2 - Longana									    *
  * Class:   CMPS 366 Organization of Programming Languages (OPL)	*
  * Date:    10/14/2017                                              *
  ********************************************************************/
-
-/*
- * This is the domino class.  Its main purpose is to manipulate a domino tile
- */
 public class Domino {
 
     private int m_leftSide;

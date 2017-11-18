@@ -11,12 +11,16 @@
     </style>
 
     <!-- Main gameplay theme. -->
-    <style name="InfoScreen" parent="android:Theme.Holo.Light.Dialog">
+    <style name="InfoScreen" parent="android:Theme.Holo.DialogWhenLarge.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="NumberPickerText">
+        <item name="android:textSize">25dp</item>
+    </style>
+
     <!-- Main gameplay theme. -->
-    <style name="MainScreen" parent="android:Theme.Holo.Light.NoActionBar">
+    <style name="MainScreen" parent="android:Theme.Holo.Light">
         <!-- Customize your theme here. -->
     </style>
 </resources>

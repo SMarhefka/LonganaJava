@@ -195,6 +195,14 @@ public class Boneyard{
         System.out.println(fullString + "\n");
     }
 
+    public class EmptyBoneyardException extends Exception
+    {
+        public EmptyBoneyardException()
+        {
+            super("The boneyard is empty");
+        }
+    }
+
     /******************************CAUTION: TESTING AREA**********************************/
     /**
      * This will test the boneyard class
