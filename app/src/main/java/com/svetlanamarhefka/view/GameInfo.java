@@ -1,11 +1,11 @@
 package com.svetlanamarhefka.view;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -21,7 +21,7 @@ import com.svetlanamarhefka.R;
  * NOTE:    THIS CLASS IS NOT CURRENTLY BEING USED              *
  ****************************************************************/
 
-public class GameInfo extends Activity {
+public class GameInfo extends AppCompatActivity {
 
     private int m_TourScore;
     private String m_UserName;
@@ -31,7 +31,6 @@ public class GameInfo extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Intent startIntent = getIntent();
 
         setContentView(R.layout.game_info);
@@ -89,12 +88,11 @@ public class GameInfo extends Activity {
         }
         else
         {
-            System.out.print("Score and Name Filled Out...Ready To Start Game\n");
+            System.out.print("Score and Name Filled Out...Ready To Start MainGameModel\n");
             m_TourScore = m_PickNumber.getValue();
             m_UserName = m_UserText.getText().toString();
 
             Intent intent = new Intent(this, MainGame.class);
-            intent.putExtra("EXTRA_NEWGAME", true);
             startActivity(intent);
         }
     }

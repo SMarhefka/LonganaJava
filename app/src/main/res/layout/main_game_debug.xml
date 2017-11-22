@@ -136,89 +136,7 @@
                     android:orientation="horizontal"
                     android:visibility="visible">
 
-                    <Button
-                        android:id="@+id/button01"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
 
-                    <Button
-                        android:id="@+id/button02"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button03"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button04"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button05"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button06"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button07"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button08"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button09"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button11"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
-
-                    <Button
-                        android:id="@+id/button12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
 
                 </LinearLayout>
 
@@ -258,10 +176,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/b_Button01"
+                        style="@style/ImageButtonCustom"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/tile"
                         android:text="Get Help" />
 
                 </LinearLayout>
@@ -272,6 +193,7 @@
                 android:id="@+id/t_Boneyard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Boneyard"
                 android:textSize="20sp" />
 
@@ -286,20 +208,16 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/l_Bone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@android:drawable/screen_background_light_transparent"
-                        android:scaleType="matrix"
-                        android:src="@drawable/tile"
-                        android:visibility="visible" />
+                        android:src="@drawable/tile" />
                 </LinearLayout>
 
             </HorizontalScrollView>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Longana</string>
+    <string name="app_name"><b>Longana</b></string>
     <string name="empty"></string>
     <string name="dis_instr">Please fill in the following information:</string>
     <string name="ask_score">What score would you like to play up to?</string>

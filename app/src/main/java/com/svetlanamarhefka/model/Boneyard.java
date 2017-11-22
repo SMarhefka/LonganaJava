@@ -1,5 +1,6 @@
 package com.svetlanamarhefka.model;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
@@ -11,11 +12,11 @@ import java.util.Vector;
  * Class:   CMPS 366 Organization of Programming Languages (OPL)*
  * Date:    11/11/2017                                          *
  ****************************************************************/
-public class Boneyard{
+public class Boneyard implements Serializable {
 
     private int m_LastIndex;
     //private ArrayList<Domino> m_UnusedTiles;
-    private Vector<Domino> m_UnusedTiles;
+    private Vector<Domino> m_TilesBoneYard;
     //private Vector<Domino> m_SortedTiles;
 
     /**
@@ -25,7 +26,7 @@ public class Boneyard{
     {
         this.m_LastIndex = 0;
         // initialize unusedTiles
-        this.m_UnusedTiles = new Vector<Domino>();
+        this.m_TilesBoneYard = new Vector<Domino>();
         // create the boneyard
         createBoneYard();
         // shuffle the boneyard
@@ -40,8 +41,8 @@ public class Boneyard{
     {
         this.m_LastIndex = 0;
         // initialize unusedTiles
-        this.m_UnusedTiles = new Vector<Domino>();
-        m_UnusedTiles = a_InBoneyard;
+        this.m_TilesBoneYard = new Vector<Domino>();
+        m_TilesBoneYard = a_InBoneyard;
     }
 
     /**
@@ -53,7 +54,7 @@ public class Boneyard{
         {
             for (int rightSide = leftSide; rightSide <= 6; rightSide++)
             {
-                m_UnusedTiles.add(new Domino(leftSide, rightSide));
+                m_TilesBoneYard.add(new Domino(leftSide, rightSide));
             }
         }
     }
@@ -63,7 +64,7 @@ public class Boneyard{
      */
     private void shuffleBonyard()
     {
-        Collections.shuffle(m_UnusedTiles);
+        Collections.shuffle(m_TilesBoneYard);
     }
 
     /**
@@ -72,13 +73,18 @@ public class Boneyard{
      */
     public Domino dealTile()
     {
-        if(!m_UnusedTiles.isEmpty())
+        if(!m_TilesBoneYard.isEmpty())
         {
-            Domino tempDomino = m_UnusedTiles.get(getM_LastIndex());
-            m_UnusedTiles.remove(getM_LastIndex());
+            Domino tempDomino = m_TilesBoneYard.get(getM_LastIndex());
+            m_TilesBoneYard.remove(getM_LastIndex());
             return tempDomino;
         }
         throw new ArrayStoreException();
+    }
+
+    Vector<Domino> getM_UnusedTiles()
+    {
+        return (Vector<Domino>) m_TilesBoneYard.clone();
     }
 
     /**
@@ -88,7 +94,7 @@ public class Boneyard{
      */
     public int getM_LastIndex()
     {
-        return m_LastIndex = m_UnusedTiles.indexOf(m_UnusedTiles.lastElement());
+        return m_LastIndex = m_TilesBoneYard.indexOf(m_TilesBoneYard.lastElement());
     }
 
     /**
@@ -97,7 +103,7 @@ public class Boneyard{
      */
     public int getSize()
     {
-        return m_UnusedTiles.size();
+        return m_TilesBoneYard.size();
     }
 
 
@@ -179,7 +185,7 @@ public class Boneyard{
             // If we want the boneyard to be sorted
             case 1:
                 // Sort the boneyard
-                sortItems(m_UnusedTiles);
+                sortItems(m_TilesBoneYard);
                 System.out.print("Boneyard Sorted\n");
                 break;
             default:
@@ -187,10 +193,10 @@ public class Boneyard{
         }
         String fullString = "";
 
-        for(int itemVal = 0; itemVal < m_UnusedTiles.size(); itemVal++)
+        for(int itemVal = 0; itemVal < m_TilesBoneYard.size(); itemVal++)
         {
             //m_UnusedTiles.get(itemVal).printDomino();
-            fullString = fullString.concat(m_UnusedTiles.get(itemVal).toString() + " ");
+            fullString = fullString.concat(m_TilesBoneYard.get(itemVal).toString() + " ");
         }
         System.out.println(fullString + "\n");
     }

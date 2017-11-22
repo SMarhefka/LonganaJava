@@ -1,5 +1,8 @@
 package com.svetlanamarhefka.model;
 
+import com.svetlanamarhefka.model.player.Computer;
+import com.svetlanamarhefka.model.player.Human;
+
 /****************************************************************
  * Name:    Svetlana Marhefka                                             *
  * Project: Project 2 - Longana                                 *
@@ -8,10 +11,12 @@ package com.svetlanamarhefka.model;
  ****************************************************************/
 
 public class Tournament {
-    // Integers containing the amount of wins for each player.
+    private String m_PlayerName;
     private int m_TourScore;
     private int m_RoundNumber;
-
+    private Round m_Round;
+    private Human m_Human;
+    private Computer m_Computer;
     // GUI components... later.
 
     /**
@@ -25,21 +30,70 @@ public class Tournament {
     }
     */
 
-    public Tournament(int a_TourScore, int a_RoundNumber)
+    public Tournament()
     {
-        this.m_TourScore = a_TourScore;
-        this.m_RoundNumber = a_RoundNumber;
+        m_Round = null;
+        this.m_PlayerName = "";
+        this.m_TourScore = 0;
+        this.m_RoundNumber = 1;
     }
 
-    public int getRound()
+    public void setM_PlayerName(String a_InPlayerName)
+    {
+        m_PlayerName = a_InPlayerName;
+    }
+
+    public String getM_PlayerName()
+    {
+        return m_PlayerName;
+    }
+
+    public void setM_TourScore(int a_InTourScore)
+    {
+        m_TourScore = a_InTourScore;
+    }
+
+    public int getM_TourScore()
+    {
+        return m_TourScore;
+    }
+
+    public void setM_RoundNumber(int a_InRoundNum)
+    {
+        m_RoundNumber = a_InRoundNum;
+    }
+
+    public int getM_RoundNumber()
     {
         return m_RoundNumber;
     }
 
-    public int getTourScore()
+    public void createPlayers()
     {
-        return m_TourScore;
+        if(getM_PlayerName().length() == 0)
+        {
+            m_Human = new Human();
+        }
+        else
+        {
+            m_Human = new Human(getM_PlayerName());
+        }
+        m_Computer = new Computer();
+
     }
+
+    public Round createNewRound()
+    {
+        m_Round = new Round(getM_TourScore(), getM_RoundNumber(), m_Computer, m_Human);
+        m_RoundNumber++;
+        return m_Round;
+    }
+
+    public Round getRound()
+    {
+        return m_Round;
+    }
+
 
     /*
     public void main(String args[])

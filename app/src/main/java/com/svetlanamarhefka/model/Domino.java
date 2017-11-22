@@ -4,13 +4,15 @@ package com.svetlanamarhefka.model;
  * This is the domino class.  Its main purpose is to manipulate a domino tile
  */
 
+import java.io.Serializable;
+
 /********************************************************************
  * Name:    Svetlana Marhefka										*
  * Project: Project 2 - Longana									    *
  * Class:   CMPS 366 Organization of Programming Languages (OPL)	*
  * Date:    10/14/2017                                              *
  ********************************************************************/
-public class Domino {
+public class Domino implements Serializable {
 
     private int m_leftSide;
     private int m_rightSide;

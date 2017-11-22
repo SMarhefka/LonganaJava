@@ -2,24 +2,32 @@ package com.svetlanamarhefka.model.player;
 
 import com.svetlanamarhefka.model.Hand;
 
+import java.io.Serializable;
+
 /****************************************************************
  * Name:    Svetlana Marhefka                                   *
  * Project: Project 2 - Longana                                 *
  * Class:   CMPS 366 Organization of Programming Languages (OPL)*
  * Date:    11/11/2017                                          *
  ****************************************************************/
-public class Player {
+public class Player implements Serializable {
 
-    private int m_Score;
-    private boolean m_Turn;
-    private int wins;
-    boolean endTurn;
-    boolean m_PassTurn;
-
+    private int m_PlayerScore;
+    private boolean m_IsTurn;
+    private boolean m_PassTurn;
+    // The hand of the current player
+    private Hand m_CurrentHand;
     // The name of the player.
     protected String playerName;
-    // The hand of the current player
-    protected Hand m_CurrentHand;
+
+
+    public Player()
+    {
+        m_CurrentHand = new Hand();
+        m_IsTurn = false;
+        m_PassTurn = false;
+        m_PlayerScore = 0;
+    }
 
     /**
      * Returns the name of the player.
@@ -27,7 +35,7 @@ public class Player {
      */
     public String getPlayerName()
     {
-        return this.playerName;
+        return playerName;
     }
 
     /**
@@ -36,6 +44,11 @@ public class Player {
      */
     public Hand getHand()
     {
-        return this.m_CurrentHand;
+        return m_CurrentHand;
+    }
+
+    public void addToScore(int a_InScore)
+    {
+        m_PlayerScore += a_InScore;
     }
 }

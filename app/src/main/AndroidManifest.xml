@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.svetlanamarhefka">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,25 +20,23 @@
             android:name=".view.StartScreen"
             android:theme="@style/StartScreen">
             <intent-filter>
+                <!-- This is the screen that launches. -->
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-
-        <!-- Game InformationActivity -->
         <activity
             android:name=".view.GameInfo"
             android:theme="@style/InfoScreen">
         </activity>
 
 
-        <!-- Main Game Screen Activity -->
+        <!-- MMainGameModelGame Screen Activity -->
         <activity
             android:name=".view.MainGame"
             android:theme="@style/MainScreen">
         </activity>
 
     </application>
-
 </manifest>

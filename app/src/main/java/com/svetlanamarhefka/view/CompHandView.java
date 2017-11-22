@@ -7,6 +7,5 @@ package com.svetlanamarhefka.view;
  * Date:    11/17/2017                                             *
  ****************************************************************/
 
-public class HandView {
-
+public class CompHandView {
 }

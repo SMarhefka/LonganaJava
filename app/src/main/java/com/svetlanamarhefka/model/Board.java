@@ -1,5 +1,6 @@
 package com.svetlanamarhefka.model;
 
+import java.io.Serializable;
 import java.util.Vector;
 /****************************************************************
  * Name:    Svetlana Marhefka                                   *
@@ -8,7 +9,7 @@ import java.util.Vector;
  * Date:    11/11/2017                                          *
  ****************************************************************/
 
-public class Board{
+public class Board implements Serializable {
 
     /* m*/
     private Vector<Domino> m_BoardVector;
@@ -18,13 +19,13 @@ public class Board{
      */
     public Board()
     {
-        m_BoardVector = new Vector<Domino>();
+        this.m_BoardVector = null;
     }
 
     /**
      * Overloaded Constructor
      */
-    Board(Vector<Domino> a_inGameBoard)
+    public Board(Vector<Domino> a_inGameBoard)
     {
         m_BoardVector = new Vector<Domino>();
         this.m_BoardVector = a_inGameBoard;
