@@ -5,8 +5,14 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import com.svetlanamarhefka.R;
+import com.svetlanamarhefka.model.Domino;
 
 /****************************************************************
  * Name:    Svetlana Marhefka                                             *
@@ -15,44 +21,40 @@ import com.svetlanamarhefka.R;
  * Date:    11/17/2017                                             *
  ****************************************************************/
 
-public class DominoView {
-    private Bitmap[] m_Tiles;
-    private Bitmap t_Normal;
-    private Bitmap t_Vertical;
+public class DominoView extends View {
+
     private Context m_Context;
 
-    public DominoView(Context a_InContext)
+    DominoView(Context context)
     {
-        m_Context = a_InContext;
-        m_Tiles = new Bitmap[7];
-        Matrix m = new  Matrix();
-        m.setRotate(90);
-
-        t_Normal = BitmapFactory.decodeResource(m_Context.getResources(), R.drawable.tile);
-        t_Vertical = Bitmap.createBitmap(t_Normal, 0, 0, t_Normal.getWidth(), t_Normal.getHeight(), m, true);
+        super(context);
+        m_Context = context;
     }
 
-    public Bitmap getBackground(boolean a_InVertical)
+    private Drawable drawDomino(int a_InSide1, int a_InSide2)
     {
-        return a_InVertical ? t_Vertical : t_Normal;
+        Log.v("drawable", "d" + String.valueOf(a_InSide1) + "_" + String.valueOf(a_InSide2));
+
+        Bitmap final_Bitmap;
+
+        Resources res = m_Context.getResources();
+        String pkg = m_Context.getPackageName();
+
+        String resName = "d" + String.valueOf(a_InSide1) + "_" + String.valueOf(a_InSide2);
+        int resId = res.getIdentifier(resName, "drawable", pkg);
+
+        Bitmap l_Bitmap = BitmapFactory.decodeResource(res, resId);
+        final_Bitmap = l_Bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Matrix m_Matrix = new Matrix();
+        m_Matrix.postRotate(90);
+        return new BitmapDrawable(res, Bitmap.createBitmap(final_Bitmap, 0, 0, final_Bitmap.getWidth(), final_Bitmap.getHeight(), m_Matrix, true));
     }
 
-    public Bitmap getTile(int i)
+    public ImageView getDominoImage(final Domino a_InDomino)
     {
-        Bitmap ret = m_Tiles[i];
-
-        if(ret == null)
-        {
-            Resources res = m_Context.getResources();
-            String pkg = m_Context.getPackageName();
-
-            String resName = "d" + String.valueOf(i);
-            int resId = res.getIdentifier(resName, "drawable", pkg);
-
-            ret = BitmapFactory.decodeResource(res, resId);
-            m_Tiles[i] = ret;
-        }
-
-        return ret;
+        ImageView t_Image = new ImageView(m_Context);
+        t_Image.setLayoutParams(new ViewGroup.LayoutParams(1, 2));
+        t_Image.setBackground(drawDomino(a_InDomino.getM_leftSide(), a_InDomino.getM_rightSide()));
+        return t_Image;
     }
 }

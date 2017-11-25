@@ -92,6 +92,11 @@ public class Round implements Serializable {
         return m_Boneyard.getM_UnusedTiles();
     }
 
+    public String playerName()
+    {
+        return m_Human.getPlayerName();
+    }
+
 
 
     /**
