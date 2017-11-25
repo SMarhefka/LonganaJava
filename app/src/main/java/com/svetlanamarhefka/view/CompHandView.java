@@ -1,5 +1,8 @@
 package com.svetlanamarhefka.view;
 
+import android.content.Context;
+import android.view.View;
+
 /****************************************************************
  * Name:    Svetlana Marhefka                                             *
  * Project: Project 2 - Longana                                 *
@@ -7,5 +10,10 @@ package com.svetlanamarhefka.view;
  * Date:    11/17/2017                                             *
  ****************************************************************/
 
-public class CompHandView {
+public class CompHandView extends View {
+
+    CompHandView(Context context)
+    {
+        super(context);
+    }
 }

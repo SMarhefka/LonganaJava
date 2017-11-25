@@ -41,7 +41,7 @@ public class MainGame extends AppCompatActivity {
         m_Round = (Round) l_intent.getSerializableExtra("EXTRA_ROUND");
 
         //m_Context = this.getApplicationContext();
-        m_DominoView = new DominoView(this.getApplicationContext());
+        //m_DominoView = new DominoView(this.getApplicationContext());
         m_BoneView = new BoneyardView(this.getApplicationContext());
 
         //TextView l_TourScore = (TextView) findViewById(R.id.t_TScore);
