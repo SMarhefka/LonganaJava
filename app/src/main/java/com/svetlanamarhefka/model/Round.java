@@ -65,15 +65,15 @@ public class Round implements Serializable {
         return a_engineCount;
     }
 
-    private void distributeTiles()
+    public void distributeTiles()
     {
         // distribute 8 tiles to each player
         for (int count = 0; count <= 7; count++)
         {
             // Give a tile to the player
-            m_Human.getHand().addTileToHand(m_Boneyard.dealTile());
+            this.m_Human.getHand().addTileToHand(m_Boneyard.dealTile());
             // Give a tile to the computer
-            m_Computer.getHand().addTileToHand(m_Boneyard.dealTile());
+            this.m_Computer.getHand().addTileToHand(m_Boneyard.dealTile());
         }
     }
 
@@ -92,12 +92,28 @@ public class Round implements Serializable {
         return m_Boneyard.getM_UnusedTiles();
     }
 
+    public Vector<Domino> getComHand()
+    {
+        return m_Computer.getHand().getM_PlayerTiles();
+        /**
+        Vector<Domino> tempVector = new Vector<Domino>();
+        for(int count = 0; count < m_Computer.getHand().getSize(); count++)
+        {
+            tempVector.add(m_Computer.getHand().getTilesAtIndex(count));
+        }
+        return tempVector;
+        */
+    }
+
+    public Vector<Domino> getHumanHand()
+    {
+        return m_Human.getHand().getM_PlayerTiles();
+    }
+
     public String playerName()
     {
         return m_Human.getPlayerName();
     }
-
-
 
     /**
      * To find the round winner and update the scores

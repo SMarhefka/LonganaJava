@@ -13,8 +13,8 @@ public class Hand implements Serializable {
     /* Going to try using a vector because it is thread safe and it
     *  was in my original code
     */
-    private static Vector<Domino> m_PlayerTiles;
-    private static Vector<Domino> m_SortedHand = new Vector<Domino>();
+    private Vector<Domino> m_PlayerTiles;
+    //private static Vector<Domino> m_SortedHand = new Vector<Domino>();
     /**
      * Default constructor
      */
@@ -134,6 +134,7 @@ public class Hand implements Serializable {
         return m_PlayerTiles;
     }
 
+    /**
     private void printHand(int a_PrintType)
     {
         Vector<Domino> tempTiles;
@@ -159,7 +160,7 @@ public class Hand implements Serializable {
         }
         System.out.println(fullString + "\n");
     }
-
+    */
     /******************************CAUTION: TESTING AREA**********************************/
     /**
      * Main method to test the methods in hand

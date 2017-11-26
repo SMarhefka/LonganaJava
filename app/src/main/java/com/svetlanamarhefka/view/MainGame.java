@@ -23,9 +23,9 @@ import java.util.Vector;
 
 public class MainGame extends AppCompatActivity {
 
-    //private BoneyardViewFail hand;
-    private DominoView m_DominoView;
     private BoneyardView m_BoneView;
+    private ComputerView m_ComHandView;
+    private HumanView m_HumanHandView;
     private Round m_Round;
     private Context m_Context;
     private Matrix m_Matrix;
@@ -40,14 +40,15 @@ public class MainGame extends AppCompatActivity {
         // Gets the round from the Start Screen Activity
         m_Round = (Round) l_intent.getSerializableExtra("EXTRA_ROUND");
 
-        //m_Context = this.getApplicationContext();
-        //m_DominoView = new DominoView(this.getApplicationContext());
-        m_BoneView = new BoneyardView(this.getApplicationContext());
+        m_Context = this.getApplicationContext();
+        m_BoneView = new BoneyardView(m_Context);
+        m_ComHandView = new ComputerView(m_Context);
+        m_HumanHandView = new HumanView(m_Context);
 
-        //TextView l_TourScore = (TextView) findViewById(R.id.t_TScore);
-        //TextView l_RoundNum = (TextView) findViewById(R.id.t_RNum);
-
+        // initialize the layout
         initLayout();
+        // distribute hands
+        distributeHands();
     }
 
     private void initLayout()
@@ -67,6 +68,28 @@ public class MainGame extends AppCompatActivity {
         LinearLayout l_Boneyard = findViewById(R.id.l_Boneyard);
         l_Boneyard.removeAllViews();
 
-        m_BoneView.initBoneyard(t_Boneyard, l_Boneyard);
+        m_BoneView.displayBoneyard(t_Boneyard, l_Boneyard);
+    }
+
+    private void distributeHands()
+    {
+        m_Round.distributeTiles();
+        System.out.print(String.valueOf(m_Round.getComHand().size()));
+        // refresh the boneyard
+        Vector<Domino> t_Boneyard = m_Round.getBoneYard();
+        LinearLayout l_Boneyard = findViewById(R.id.l_Boneyard);
+        l_Boneyard.removeAllViews();
+        // display new boneyard
+        m_BoneView.displayBoneyard(t_Boneyard, l_Boneyard);
+
+        Vector<Domino> t_ComHand = m_Round.getComHand();
+        LinearLayout l_ComHand = findViewById(R.id.l_ComHand);
+        l_ComHand.removeAllViews();
+        m_ComHandView.addButtons(t_ComHand, l_ComHand);
+
+        Vector<Domino> t_HumanHand = m_Round.getHumanHand();
+        LinearLayout l_HumanHand = findViewById(R.id.l_HumHand);
+        l_HumanHand.removeAllViews();
+        m_HumanHandView.displayHumanHand(t_HumanHand, l_HumanHand);
     }
 }

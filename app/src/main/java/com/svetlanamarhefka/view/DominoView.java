@@ -31,7 +31,7 @@ public class DominoView extends View {
         m_Context = context;
     }
 
-    private Drawable drawDomino(int a_InSide1, int a_InSide2)
+    public Drawable drawDomino(int a_InSide1, int a_InSide2, boolean a_InHorVer, boolean a_InFlip)
     {
         Log.v("drawable", "d" + String.valueOf(a_InSide1) + "_" + String.valueOf(a_InSide2));
 
@@ -46,15 +46,33 @@ public class DominoView extends View {
         Bitmap l_Bitmap = BitmapFactory.decodeResource(res, resId);
         final_Bitmap = l_Bitmap.copy(Bitmap.Config.ARGB_8888, true);
         Matrix m_Matrix = new Matrix();
-        m_Matrix.postRotate(90);
+
+        if(a_InHorVer == true)
+        {
+            m_Matrix.postRotate(90);
+        }
+
+        if(a_InFlip == true)
+        {
+            m_Matrix.postRotate(180);
+        }
+
         return new BitmapDrawable(res, Bitmap.createBitmap(final_Bitmap, 0, 0, final_Bitmap.getWidth(), final_Bitmap.getHeight(), m_Matrix, true));
     }
 
-    public ImageView getDominoImage(final Domino a_InDomino)
+    public ImageView imgDominoUpDwn(final Domino a_InDomino)
     {
         ImageView t_Image = new ImageView(m_Context);
         t_Image.setLayoutParams(new ViewGroup.LayoutParams(1, 2));
-        t_Image.setBackground(drawDomino(a_InDomino.getM_leftSide(), a_InDomino.getM_rightSide()));
+        t_Image.setBackground(drawDomino(a_InDomino.getM_leftSide(), a_InDomino.getM_rightSide(), true, false));
+        return t_Image;
+    }
+
+    public ImageView imgDominoAccross(final Domino a_InDomino, boolean a_InFlip)
+    {
+        ImageView t_Image = new ImageView(m_Context);
+        t_Image.setLayoutParams(new ViewGroup.LayoutParams(1, 2));
+        t_Image.setBackground(drawDomino(a_InDomino.getM_leftSide(), a_InDomino.getM_rightSide(), false, a_InFlip));
         return t_Image;
     }
 }
