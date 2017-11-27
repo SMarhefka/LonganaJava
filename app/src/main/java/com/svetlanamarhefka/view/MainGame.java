@@ -1,10 +1,13 @@
 package com.svetlanamarhefka.view;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -51,6 +54,8 @@ public class MainGame extends AppCompatActivity {
         initLayout();
         // distribute hands
         distributeHands();
+        // get the first player
+        //getFirstPlayer();
     }
 
     private void initLayout()
@@ -84,6 +89,32 @@ public class MainGame extends AppCompatActivity {
         updateLayout();
     }
 
+    public void getFirstPlayer()
+    {
+        String t_FirstPlayer = m_Round.firstPlayer();
+        if (t_FirstPlayer != null) {
+            updateLayout();
+            AlertDialog.Builder messages = new AlertDialog.Builder(MainGame.this);
+            messages.setMessage(t_FirstPlayer)
+                    .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //normalizePlayTurn();
+                            System.out.print("Continue pressed...So far so good!");
+                        }
+                    });
+            //save and quit, normalize the firstPlayer
+            messages.show();
+        } else {
+            //normalizePlayTurn();
+            System.out.print("In the else statment...Everything is okay!");
+        }
+    }
+
+    public void drawButtonClick(View view)
+    {
+        System.out.print("Draw Button Pressed");
+    }
 
     private void updateLayout()
     {

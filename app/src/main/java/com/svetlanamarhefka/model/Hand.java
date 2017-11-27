@@ -59,8 +59,10 @@ public class Hand implements Serializable {
     }
 
     // this function will be used when a player places their tile on the board
-    private void removeTile(Domino a_InTile)
+    public void removeTile(int a_InTileIndex)
+    //public void removeTile(Domino a_InTile)
     {
+        /*
         // go through the vector and find the tile that is going to be deleted.
         for (int itemVal = 0; itemVal != m_PlayerTiles.size(); itemVal++)
         {
@@ -81,6 +83,8 @@ public class Hand implements Serializable {
                 break;
             }
         }
+        */
+        m_PlayerTiles.removeElementAt(a_InTileIndex);
     }
 
     public int getM_EngineIndex()

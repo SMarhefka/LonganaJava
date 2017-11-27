@@ -284,12 +284,30 @@
                 android:visibility="visible">
 
                 <Button
+                    android:id="@+id/b_DrawTile"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="drawButtonClick"
+                    android:text="Draw Tile" />
+
+                <Button
                     android:id="@+id/b_PassTurn"
                     style="@style/Widget.AppCompat.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Pass Turn"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/b_GetHelp"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Get Help"
                     android:visibility="visible" />
 
                 <Button
@@ -301,14 +319,6 @@
                     android:text="Save Game"
                     android:visibility="visible" />
 
-                <Button
-                    android:id="@+id/b_GetHelp"
-                    style="@style/Widget.AppCompat.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Get Help"
-                    android:visibility="visible" />
             </LinearLayout>
 
         </LinearLayout>

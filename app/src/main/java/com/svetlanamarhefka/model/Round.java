@@ -62,6 +62,11 @@ public class Round implements Serializable {
         return m_RoundNumber;
     }
 
+    public int getM_EngineValue()
+    {
+        return m_EngineValue;
+    }
+
     public String playerName()
     {
         return m_Human.getPlayerName();
@@ -129,35 +134,63 @@ public class Round implements Serializable {
         }
     }
 
-    public void firstPlayer()
+    public String firstPlayer()
     {
+        StringBuilder t_Log = new StringBuilder();
         // While nobody has the engine
-        while (!engineInHand())
+        while (!engineInHand(t_Log))
         {
             // Give a tile to the player
             this.m_Human.getHand().addTileToHand(m_Boneyard.dealTile());
+            t_Log.append("Human drew: " + m_Human.getHand().getTilesAtIndex(
+                    m_Human.getHand().getSize() - 1) + "\n");
             // Give a tile to the computer
             this.m_Computer.getHand().addTileToHand(m_Boneyard.dealTile());
+            t_Log.append("Computer drew: " + m_Computer.getHand().getTilesAtIndex(
+                    m_Computer.getHand().getSize() - 1) + "\n");
         }
+        return t_Log.toString();
     }
 
-    private boolean engineInHand()
+    private boolean engineInHand(StringBuilder a_InLog)
     {
         // checks to see if the human has the engine
         if(m_Human.getHand().hasEngine(m_EngineValue))
         {
-            System.out.print("Round: " + m_RoundNumber + " Human has the engine!\n");
+            System.out.print("Round: " + m_RoundNumber + " " + m_Human.getPlayerName() +
+                    " has the engine!\n");
+            a_InLog.append(m_Human.getPlayerName() + " has the engine ( " +
+                    m_EngineValue + "-" + m_EngineValue + " )\n");
+            m_Board.setM_EngineVal(getM_EngineValue());
+            m_ComputerTurn = false;
             return true;
         }
         // check if the computer has the engine
         else if(m_Computer.getHand().hasEngine(m_EngineValue))
         {
             System.out.print("Round: " + m_RoundNumber + " Computer has the engine!\n");
-            m_Computer.getHand().getM_EngineIndex();
+            a_InLog.append(m_Human.getPlayerName() + " has the engine ( " +
+                    m_EngineValue + "-" + m_EngineValue + " )\n");
+
+            m_Board.setM_EngineVal(getM_EngineValue());
+
+            m_Computer.playDomino(m_Computer.getHand().getM_EngineIndex(), m_Board,Side.RIGHT);
             m_ComputerTurn = false;
             return true;
         }
         return false;
+    }
+
+    //
+    public String setHumanTurn()
+    {
+        if (m_ComputerTurn)
+        {
+            // set the computer turn to false
+            m_ComputerTurn = false;
+        }
+        // otherwise don't return anything
+        return null;
     }
 
     private boolean canHumanPass()
@@ -212,11 +245,6 @@ public class Round implements Serializable {
     {
         m_PrevPass = false;
         m_PassCount = 0;
-    }
-
-    public void drawDomino()
-    {
-
     }
 
     /**

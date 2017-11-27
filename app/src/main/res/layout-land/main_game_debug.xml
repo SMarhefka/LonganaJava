@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="visible"
+    tools:context="com.svetlanamarhefka.view.MainGame">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/i_Tournament"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <!-- Tournament Score-->
+                <TableRow
+                    android:id="@+id/r_Tournament_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/t_TourScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Tournament Score: "
+                        android:textSize="25sp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/t_TScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/empty"
+                        android:textSize="25sp"
+                        android:visibility="visible" />
+                </TableRow>
+
+                <!-- Round Number-->
+                <TableRow
+                    android:id="@+id/r_Tournament_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/t_RoundNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Round Number: "
+                        android:textSize="25sp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/t_RNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty"
+                        android:textSize="25sp" />
+                </TableRow>
+            </LinearLayout>
+
+
+            <!-- Computer Info-->
+            <LinearLayout
+                android:id="@+id/i_Computer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <!-- Computer Score-->
+                <TableRow
+                    android:id="@+id/r_Computer_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/t_ComScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Computer Score: "
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/t_CScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="25sp"
+                        android:visibility="visible" />
+                </TableRow>
+
+                <!-- Computer Hand-->
+                <TableRow
+                    android:id="@+id/i_Computer_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/t_ComHand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Computer Hand"
+                        android:textSize="25sp" />
+                </TableRow>
+
+                <HorizontalScrollView
+                    android:id="@+id/i_Computer_3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!-- Computer Hand-->
+                    <LinearLayout
+                        android:id="@+id/l_ComHand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+            <!-- Main Board-->
+            <LinearLayout
+                android:id="@+id/i_Board"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/t_Board"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:isScrollContainer="false"
+                    android:text="Current Board"
+                    android:textSize="25sp" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_Board"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
+
+                    <HorizontalScrollView
+                        android:id="@+id/h_BoardScroll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:fillViewport="true"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:id="@+id/l_Board_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0"
+                                android:text="L"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                                android:textColor="@android:color/holo_red_light" />
+
+                            <LinearLayout
+                                android:id="@+id/l_Board"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="horizontal">
+
+                                <ImageButton
+                                    android:id="@+id/b_Button01"
+                                    style="@style/ImageButtonCustom"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/d0_0"
+                                    android:text="Get Help" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0"
+                                android:text="R"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                                android:textColor="@android:color/holo_green_dark" />
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/t_Boneyard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:text="Boneyard"
+                    android:textSize="25sp" />
+
+                <HorizontalScrollView
+                    android:id="@+id/h_BoneScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/l_Boneyard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:src="@drawable/d0_0" />
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/t_Play"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Play Options"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:id="@+id/l_Play"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <Button
+                        android:id="@+id/b_PassTurn"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Pass Turn"
+                        android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/b_Save"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Save Game"
+                        android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/b_GetHelp"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Get Help"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <!-- Human Info-->
+            <LinearLayout
+                android:id="@+id/i_Human"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <!-- Human Score-->
+                <TableRow
+                    android:id="@+id/r_Human_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/t_HName_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" "
+                        android:textSize="20sp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/t_Human_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Score: "
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/t_HScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/r_Human_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/t_HName_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" "
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/t_Human_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hand"
+                        android:textSize="20sp" />
+                </TableRow>
+
+                <!-- Computer Hand-->
+                <TableRow
+                    android:id="@+id/r_Human_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <HorizontalScrollView
+                        android:id="@+id/h_HumScroll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:id="@+id/l_HumHand"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/b_HTest"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Button" />
+
+                        </LinearLayout>
+
+                    </HorizontalScrollView>
+
+                </TableRow>
+
+            </LinearLayout>
+
+        </TableLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
