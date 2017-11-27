@@ -15,12 +15,14 @@ public class Hand implements Serializable {
     */
     private Vector<Domino> m_PlayerTiles;
     //private static Vector<Domino> m_SortedHand = new Vector<Domino>();
+    private int m_EngineIndex;
     /**
      * Default constructor
      */
     public Hand()
     {
         m_PlayerTiles = new Vector<Domino>();
+        m_EngineIndex = 0;
     }
 
     /**
@@ -81,6 +83,11 @@ public class Hand implements Serializable {
         }
     }
 
+    public int getM_EngineIndex()
+    {
+        return m_EngineIndex;
+    }
+
     /**
      * NOT ENTIRELY SURE IF WE WILL NEED THIS
      * @param a_InIndex --> The index value at which to retrieve a tile
@@ -97,12 +104,14 @@ public class Hand implements Serializable {
      * @return true --> returns true if the hand contains the engine
      *         false --> returns false if the hand does not contain the engine
      */
-    private boolean hasEngine(int a_InEngine)
+    public boolean hasEngine(int a_InEngine)
     {
         for (int itemCount = 0; itemCount != m_PlayerTiles.size(); itemCount++)
         {
             if (((m_PlayerTiles.get(itemCount).isDouble()) && ((m_PlayerTiles.get(itemCount).getM_leftSide() == a_InEngine))))
             {
+                // Provides the index number that the engine is stored in
+                m_EngineIndex = itemCount;
                 return true;
             }
         }

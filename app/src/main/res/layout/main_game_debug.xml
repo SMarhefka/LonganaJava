@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Tournament Score: "
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:visibility="visible" />
 
                 <TextView
@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/empty"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:visibility="visible" />
             </TableRow>
 
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Round Number: "
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:visibility="visible" />
 
                 <TextView
@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/empty"
-                    android:textSize="20sp" />
+                    android:textSize="25sp" />
             </TableRow>
         </LinearLayout>
 
@@ -92,14 +92,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Computer Score: "
-                    android:textSize="20sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/t_CScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:visibility="visible" />
             </TableRow>
 
@@ -114,8 +114,9 @@
                     android:id="@+id/t_ComHand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:text="Computer Hand"
-                    android:textSize="20sp" />
+                    android:textSize="25sp" />
             </TableRow>
 
             <HorizontalScrollView
@@ -155,14 +156,16 @@
                 android:id="@+id/t_Board"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:isScrollContainer="false"
                 android:text="Current Board"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
 
             <RelativeLayout
                 android:id="@+id/rl_Board"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:visibility="visible">
 
                 <HorizontalScrollView
@@ -209,7 +212,7 @@
                                 android:layout_weight="0"
                                 android:scaleType="fitXY"
                                 android:src="@drawable/d0_0"
-                                android:text="Get Help" />
+                                android:visibility="visible" />
 
                         </LinearLayout>
 
@@ -231,14 +234,16 @@
                 android:id="@+id/t_Boneyard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:text="Boneyard"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
 
             <HorizontalScrollView
                 android:id="@+id/h_BoneScroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -265,37 +270,45 @@
                 android:id="@+id/t_Play"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:text="Play Options"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
 
             <LinearLayout
                 android:id="@+id/l_Play"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/b_GetHelp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="clip_vertical"
-                    android:layout_marginRight="50dp"
-                    android:text="Get Help" />
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
                 <Button
                     android:id="@+id/b_PassTurn"
+                    style="@style/Widget.AppCompat.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="50dp"
-                    android:text="Pass Turn" />
+                    android:layout_weight="1"
+                    android:text="Pass Turn"
+                    android:visibility="visible" />
 
                 <Button
                     android:id="@+id/b_Save"
+                    style="@style/Widget.AppCompat.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Save Game" />
+                    android:layout_weight="1"
+                    android:text="Save Game"
+                    android:visibility="visible" />
 
+                <Button
+                    android:id="@+id/b_GetHelp"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Get Help"
+                    android:visibility="visible" />
             </LinearLayout>
 
         </LinearLayout>
@@ -320,7 +333,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" "
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:visibility="visible" />
 
                 <TextView
@@ -328,14 +341,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Score: "
-                    android:textSize="20sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/t_HScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="20sp" />
+                    android:textSize="25sp" />
             </TableRow>
 
             <TableRow
@@ -348,14 +361,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" "
-                    android:textSize="20sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/t_Human_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:text="Hand"
-                    android:textSize="20sp" />
+                    android:textSize="25sp" />
             </TableRow>
 
             <!-- Computer Hand-->

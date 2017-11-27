@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning,HardcodedText">
 
         <!-- Start Screen Activity. -->
         <activity
@@ -35,7 +35,8 @@
         <!-- MMainGameModelGame Screen Activity -->
         <activity
             android:name=".view.MainGame"
-            android:theme="@style/MainScreen">
+            android:theme="@style/MainScreen"
+            android:screenOrientation="portrait">
         </activity>
 
     </application>

@@ -2,11 +2,8 @@ package com.svetlanamarhefka.view;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.svetlanamarhefka.model.Domino;
 
@@ -21,7 +18,6 @@ import java.util.Vector;
 
 public class ComputerView extends View {
 
-    private MainGame m_MainView;
     private DominoView m_DominoView;
     private Context m_Context;
 
@@ -32,7 +28,7 @@ public class ComputerView extends View {
         m_DominoView = new DominoView(m_Context);
     }
 
-    public void addButtons(Vector<Domino> a_InDomino, LinearLayout a_InLayout)
+    public void displayHand(Vector<Domino> a_InDomino, LinearLayout a_InLayout)
     {
         GridLayout.LayoutParams gridLayoutParam;
 
@@ -44,36 +40,7 @@ public class ComputerView extends View {
             GridLayout.Spec gridCol = GridLayout.spec(col, 1);
             gridLayoutParam = new GridLayout.LayoutParams(gridRow, gridCol);
             gridLayoutParam.setMargins(4, 0, 4, 0);
-            a_InLayout.addView(btnDominoUpDwn (a_InDomino.get(i), true), gridLayoutParam);
+            a_InLayout.addView(m_DominoView.imgDominoUpDwn (a_InDomino.get(i)), gridLayoutParam);
         }
     }
-
-    public ImageButton btnDominoUpDwn(final Domino a_InDomino, boolean buttonsEnabled) {
-        ImageButton t_button = new ImageButton(m_Context);
-        t_button.setLayoutParams(new ViewGroup.LayoutParams(1, 2));
-
-        t_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(m_Context, "Clicked on image button", Toast.LENGTH_SHORT).show();
-                System.out.print("I've been clicked!!");
-
-            }
-        });
-        /*
-        if (buttonsEnabled) {
-            //eventListenerForButton
-            t_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.print("I've been clicked!!");
-                }
-            });
-        }
-        */
-
-        t_button.setBackground(m_DominoView.drawDomino(a_InDomino.getM_leftSide(), a_InDomino.getM_rightSide(), true, false));
-        return t_button;
-    }
-
 }

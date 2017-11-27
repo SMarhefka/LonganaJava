@@ -1,5 +1,7 @@
 package com.svetlanamarhefka.model.player;
 
+import com.svetlanamarhefka.model.Side;
+
 /****************************************************************
  * Name:    Svetlana Marhefka                                   *
  * Project: Project 2 - Longana                                 *
@@ -15,6 +17,10 @@ public class Human extends Player {
     {
         // Give the computer its name.
         this.playerName = "Human";
+        // Set the default side to play on
+        m_DefaultSide = Side.LEFT;
+        // Set the other side as left
+        m_OtherSide = Side.RIGHT;
     }
 
     /**
@@ -24,5 +30,9 @@ public class Human extends Player {
     {
         // Give the the human a name.
         this.playerName = a_UserName;
+        // Set the default side to play on
+        m_DefaultSide = Side.LEFT;
+        // Set the other side as left
+        m_OtherSide = Side.RIGHT;
     }
 }

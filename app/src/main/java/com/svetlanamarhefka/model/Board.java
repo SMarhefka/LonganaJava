@@ -13,13 +13,15 @@ public class Board implements Serializable {
 
     /* m*/
     private Vector<Domino> m_BoardVector;
+    private boolean m_HasEngine;
 
     /**
      * Default Constructor
      */
     public Board()
     {
-        this.m_BoardVector = null;
+        this.m_BoardVector = new Vector<Domino>();
+        m_HasEngine = false;
     }
 
     /**
@@ -29,6 +31,11 @@ public class Board implements Serializable {
     {
         m_BoardVector = new Vector<Domino>();
         this.m_BoardVector = a_inGameBoard;
+    }
+
+    public void setM_HasEngine()
+    {
+        m_HasEngine = true;
     }
 
     // this function will add a tile to the begining of the vector
@@ -45,10 +52,10 @@ public class Board implements Serializable {
         m_BoardVector.add(a_tileToAdd);
     }
 
-    // this function will retrieve the right most value of the board
-    private int boardRight()
+    // this function will check to see if the board is empty
+    private boolean boardEmpty()
     {
-        return m_BoardVector.elementAt(m_BoardVector.size()).getM_rightSide();
+        return m_BoardVector.isEmpty() == true;
     }
 
     // this function will retrieve the left most value of the board
@@ -57,10 +64,76 @@ public class Board implements Serializable {
         return m_BoardVector.elementAt(0).getM_leftSide();
     }
 
-    // this function will check to see if the board is empty
-    private boolean boardEmpty()
+    // this function will retrieve the right most value of the board
+    private int boardRight()
     {
-        return m_BoardVector.isEmpty() == true;
+        return m_BoardVector.elementAt(m_BoardVector.size()).getM_rightSide();
+    }
+
+
+    public boolean addToBoard(Domino a_InDomino, Side a_InSide)
+    {
+        // If there is no engine on the board
+        if(!m_HasEngine)
+            return false;
+        // Check to make sure that the domino is valid
+        Domino checkDomino = checkDominoAgainstBoard(a_InDomino, a_InSide);
+        if(checkDomino == null)
+            return false;
+        // If the side selected is Left and the domino is valid
+        if(a_InSide == Side.LEFT)
+        {
+            addToLeft(checkDomino);
+        }
+        else if(a_InSide == Side.RIGHT)
+        {
+            addToRight(checkDomino);
+        }
+        // If it gets all the way down here then we are good
+        return true;
+    }
+
+    public boolean validDomino(Domino a_InDomino, Side a_InSide)
+    {
+        // If the board doesn't have the engine
+        if(!m_HasEngine)
+        {
+            return false;
+        }
+        return checkDominoAgainstBoard(a_InDomino, a_InSide) != null;
+    }
+
+    public Domino checkDominoAgainstBoard(Domino a_InDomino, Side a_InSide)
+    {
+        if (!m_HasEngine)
+            return null;
+        if(a_InSide == Side.LEFT)
+        {
+            if(boardLeft() == a_InDomino.getM_rightSide())
+            {
+                return  a_InDomino;
+            }
+            else if(boardLeft() == a_InDomino.getM_leftSide())
+            {
+                a_InDomino.flipTile();
+                return a_InDomino;
+            }
+
+        }
+        else if(a_InSide == Side.RIGHT)
+        {
+            if(boardRight() == a_InDomino.getM_leftSide())
+            {
+                return  a_InDomino;
+            }
+            else if(boardRight() == a_InDomino.getM_rightSide())
+            {
+                a_InDomino.flipTile();
+                return a_InDomino;
+            }
+        }
+        else return null;
+        return null;
     }
 
     public boolean addTileBack(Domino a_InTile)
@@ -131,7 +204,7 @@ public class Board implements Serializable {
         return true;
     }
 
-    public boolean addDoubleTile(Domino a_InTile, String a_InSide)
+    public boolean addDoubleTile(Domino a_InTile, Side a_InSide)
     {
         // If the tile is not a double
         if(!a_InTile.isDouble())
@@ -158,6 +231,11 @@ public class Board implements Serializable {
 
         }
         return false;
+    }
+
+    public Vector<Domino> getM_BoardVector()
+    {
+        return m_BoardVector;
     }
 
     // this function will print the curent board to the screen

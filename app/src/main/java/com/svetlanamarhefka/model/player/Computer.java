@@ -1,5 +1,7 @@
 package com.svetlanamarhefka.model.player;
 
+import com.svetlanamarhefka.model.Side;
+
 /****************************************************************
  * Name:    Svetlana Marhefka                                   *
  * Project: Project 2 - Longana                                 *
@@ -14,5 +16,9 @@ public class Computer extends Player {
     {
         // Give the computer its name.
         this.playerName = "Computer";
+        // Set the default side to play on
+        m_DefaultSide = Side.RIGHT;
+        // Set the other side as left
+        m_OtherSide = Side.LEFT;
     }
 }

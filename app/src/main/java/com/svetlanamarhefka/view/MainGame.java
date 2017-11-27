@@ -23,6 +23,7 @@ import java.util.Vector;
 
 public class MainGame extends AppCompatActivity {
 
+    private BoardView m_BoardView;
     private BoneyardView m_BoneView;
     private ComputerView m_ComHandView;
     private HumanView m_HumanHandView;
@@ -39,11 +40,12 @@ public class MainGame extends AppCompatActivity {
         Intent l_intent = getIntent();
         // Gets the round from the Start Screen Activity
         m_Round = (Round) l_intent.getSerializableExtra("EXTRA_ROUND");
-
         m_Context = this.getApplicationContext();
+
+        m_BoardView = new BoardView(m_Context);
         m_BoneView = new BoneyardView(m_Context);
         m_ComHandView = new ComputerView(m_Context);
-        m_HumanHandView = new HumanView(m_Context);
+        m_HumanHandView = new HumanView(m_Context, this);
 
         // initialize the layout
         initLayout();
@@ -53,43 +55,96 @@ public class MainGame extends AppCompatActivity {
 
     private void initLayout()
     {
+        // Display Tournament Score to the screen
         TextView l_TourScore = findViewById(R.id.t_TScore);
         l_TourScore.setText(String.valueOf(m_Round.getM_TourScore()));
+        // Display the Round Number to the screen
         TextView l_RoundNum = findViewById(R.id.t_RNum);
         l_RoundNum.setText(String.valueOf(m_Round.getM_RoundNumber()));
-        //t_HName_1
+
+        // Display the computer score to the screen
+        TextView l_ComputerScore = findViewById(R.id.t_CScore);
+
+        // Display the human name to the main game screen
         TextView l_HumanName = findViewById(R.id.t_HName_1);
         l_HumanName.setText(m_Round.playerName().toString() + " ");
-        //t_HName_2
+        // Display the human score to the screen
+
+        // Display the human name to the main game screen
         l_HumanName = findViewById(R.id.t_HName_2);
         l_HumanName.setText(m_Round.playerName().toString() + " ");
 
-        Vector<Domino> t_Boneyard = m_Round.getBoneYard();
-        LinearLayout l_Boneyard = findViewById(R.id.l_Boneyard);
-        l_Boneyard.removeAllViews();
-
-        m_BoneView.displayBoneyard(t_Boneyard, l_Boneyard);
+        // show the initial boneyard
+        updateBoneyard();
     }
 
     private void distributeHands()
     {
         m_Round.distributeTiles();
-        System.out.print(String.valueOf(m_Round.getComHand().size()));
+        updateLayout();
+    }
+
+
+    private void updateLayout()
+    {
+        if(m_Round.roundOver())
+        {
+            System.out.print("Round is over!");
+        }
+        updateBoard();
+        updateBoneyard();
+        updateHumanHand();
+        updateComputerHand();
+    }
+
+    private void updateBoard()
+    {
+        Vector<Domino> t_Board = m_Round.getBoard();
+        LinearLayout l_Board = findViewById(R.id.l_Board);
+        l_Board.removeAllViews();
+        m_BoardView.displayBoard(t_Board, l_Board);
+    }
+
+    private void updateBoneyard()
+    {
         // refresh the boneyard
         Vector<Domino> t_Boneyard = m_Round.getBoneYard();
         LinearLayout l_Boneyard = findViewById(R.id.l_Boneyard);
         l_Boneyard.removeAllViews();
         // display new boneyard
         m_BoneView.displayBoneyard(t_Boneyard, l_Boneyard);
-
-        Vector<Domino> t_ComHand = m_Round.getComHand();
-        LinearLayout l_ComHand = findViewById(R.id.l_ComHand);
-        l_ComHand.removeAllViews();
-        m_ComHandView.addButtons(t_ComHand, l_ComHand);
-
+    }
+    private void updateHumanHand()
+    {
         Vector<Domino> t_HumanHand = m_Round.getHumanHand();
         LinearLayout l_HumanHand = findViewById(R.id.l_HumHand);
         l_HumanHand.removeAllViews();
-        m_HumanHandView.displayHumanHand(t_HumanHand, l_HumanHand);
+        m_HumanHandView.displayHand(t_HumanHand, l_HumanHand);
     }
+    private void updateComputerHand()
+    {
+        Vector<Domino> t_ComHand = m_Round.getComHand();
+        LinearLayout l_ComHand = findViewById(R.id.l_ComHand);
+        l_ComHand.removeAllViews();
+        m_ComHandView.displayHand(t_ComHand, l_ComHand);
+    }
+
+    /**
+     * Plays the move and updates the view
+     * @param a_InDomino domino to play
+     * @param a_InSide side to play
+     * @return true if move was possible, false if not
+     */
+    /*
+    private boolean playRound(Domino a_InDomino, Side a_InSide) {
+        String message = m_Round.play(a_InDomino, a_InSide);
+        if (message != null) {
+            Toast toast = Toast.makeText(MainGame.this, message, Toast.LENGTH_LONG);
+            toast.show();
+            return false;
+        }
+        refreshLayout();
+        return true;
+    }
+    */
 }

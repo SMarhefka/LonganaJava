@@ -17,11 +17,16 @@ public class Round implements Serializable {
 
     private int m_TourScore;
     private int m_RoundNumber;
+    private int m_PassCount;
     private int m_EngineValue;
+
     private Boneyard m_Boneyard;
     private Board m_Board;
     private Human m_Human;
     private Computer m_Computer;
+
+    private boolean m_PrevPass;
+    private boolean m_ComputerTurn;
 
 
     public Round()
@@ -36,11 +41,30 @@ public class Round implements Serializable {
     {
         m_TourScore = a_InTourScore;
         m_RoundNumber = a_InRoundNum;
+        m_PassCount = 0;
         m_EngineValue = getEngine();
+
         m_Boneyard = new Boneyard();
         m_Board = new Board();
         m_Computer = a_InComputer;
         m_Human = a_InHuman;
+
+        m_PrevPass = false;
+    }
+
+    public int getM_TourScore()
+    {
+        return m_TourScore;
+    }
+
+    public int getM_RoundNumber()
+    {
+        return m_RoundNumber;
+    }
+
+    public String playerName()
+    {
+        return m_Human.getPlayerName();
     }
 
     private int getEngine()
@@ -65,6 +89,34 @@ public class Round implements Serializable {
         return a_engineCount;
     }
 
+    public Vector<Domino> getBoard()
+    {
+        return m_Board.getM_BoardVector();
+    }
+
+    public Vector<Domino> getBoneYard()
+    {
+        return m_Boneyard.getM_UnusedTiles();
+    }
+
+    public Vector<Domino> getComHand()
+    {
+        return m_Computer.getHand().getM_PlayerTiles();
+        /**
+         Vector<Domino> tempVector = new Vector<Domino>();
+         for(int count = 0; count < m_Computer.getHand().getSize(); count++)
+         {
+         tempVector.add(m_Computer.getHand().getTilesAtIndex(count));
+         }
+         return tempVector;
+         */
+    }
+
+    public Vector<Domino> getHumanHand()
+    {
+        return m_Human.getHand().getM_PlayerTiles();
+    }
+
     public void distributeTiles()
     {
         // distribute 8 tiles to each player
@@ -77,42 +129,102 @@ public class Round implements Serializable {
         }
     }
 
-    public int getM_TourScore()
+    public void firstPlayer()
     {
-        return m_TourScore;
-    }
-
-    public int getM_RoundNumber()
-    {
-        return m_RoundNumber;
-    }
-
-    public Vector<Domino> getBoneYard()
-    {
-        return m_Boneyard.getM_UnusedTiles();
-    }
-
-    public Vector<Domino> getComHand()
-    {
-        return m_Computer.getHand().getM_PlayerTiles();
-        /**
-        Vector<Domino> tempVector = new Vector<Domino>();
-        for(int count = 0; count < m_Computer.getHand().getSize(); count++)
+        // While nobody has the engine
+        while (!engineInHand())
         {
-            tempVector.add(m_Computer.getHand().getTilesAtIndex(count));
+            // Give a tile to the player
+            this.m_Human.getHand().addTileToHand(m_Boneyard.dealTile());
+            // Give a tile to the computer
+            this.m_Computer.getHand().addTileToHand(m_Boneyard.dealTile());
         }
-        return tempVector;
-        */
     }
 
-    public Vector<Domino> getHumanHand()
+    private boolean engineInHand()
     {
-        return m_Human.getHand().getM_PlayerTiles();
+        // checks to see if the human has the engine
+        if(m_Human.getHand().hasEngine(m_EngineValue))
+        {
+            System.out.print("Round: " + m_RoundNumber + " Human has the engine!\n");
+            return true;
+        }
+        // check if the computer has the engine
+        else if(m_Computer.getHand().hasEngine(m_EngineValue))
+        {
+            System.out.print("Round: " + m_RoundNumber + " Computer has the engine!\n");
+            m_Computer.getHand().getM_EngineIndex();
+            m_ComputerTurn = false;
+            return true;
+        }
+        return false;
     }
 
-    public String playerName()
+    private boolean canHumanPass()
     {
-        return m_Human.getPlayerName();
+        if(m_Human.validMove(m_Board, m_PrevPass))
+        {
+            return false;
+        }
+        if(m_Human.isM_DominoTaken())
+        {
+            return false;
+        }
+        m_Human.unsetDominoTaken();
+        m_ComputerTurn = true;
+        return true;
+    }
+
+    public Domino humanDrawTile()
+    {
+        // if the human doesn't have any valid moves
+        if(m_Human.validMove(m_Board, m_PrevPass))
+        {
+            // return nothing
+            return null;
+        }
+        // if the human has already taken a tile
+        if(m_Human.isM_DominoTaken())
+        {
+            // return nothing
+            return null;
+        }
+        System.out.print("Player has drawn: " + m_Human.isM_DominoTaken());
+        // if the Boneyard is empty
+        if(m_Boneyard.isEmpty())
+        {
+            m_Human.setM_DominoTaken();
+            return null;
+        }
+
+        Domino t_Domino = m_Boneyard.dealTile();
+        m_Human.takeDomino(t_Domino);
+        return t_Domino;
+    }
+
+    private void passTurn()
+    {
+        m_PrevPass = true;
+        m_PassCount++;
+    }
+
+    private void resetPass()
+    {
+        m_PrevPass = false;
+        m_PassCount = 0;
+    }
+
+    public void drawDomino()
+    {
+
+    }
+
+    /**
+     * To check if the round is over
+     * @return true is round ended, else false
+     */
+    public boolean roundOver() {
+        return (m_Human.getHand().isEmpty() || m_Computer.getHand().isEmpty()) || (m_PassCount > 2);
     }
 
     /**

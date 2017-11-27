@@ -107,6 +107,10 @@ public class Boneyard implements Serializable {
     }
 
 
+    public boolean isEmpty()
+    {
+        return m_TilesBoneYard.isEmpty();
+    }
 
     /**
      * THIS FUNCTION MAY NEVER NEED TO BE USED
