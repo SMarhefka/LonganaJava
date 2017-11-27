@@ -39,19 +39,22 @@ public class BoardView extends View {
             GridLayout.Spec gridRow = GridLayout.spec(row, 1);
             GridLayout.Spec gridCol = GridLayout.spec(col, 1);
             gridLayoutParam = new GridLayout.LayoutParams(gridRow, gridCol);
-            gridLayoutParam.setMargins(4, 0, 4, 0);
+            gridLayoutParam.setMargins(5, 0, 5, 0);
 
             if(a_InDomino.get(i).isDouble())
             {
                 a_InLayout.addView(m_DominoView.imgDominoUpDwn (a_InDomino.get(i)), gridLayoutParam);
             }
-            if (a_InDomino.get(i).getM_leftSide() < a_InDomino.get(i).getM_rightSide())
-            {
-                a_InLayout.addView(m_DominoView.imgDominoAccross (a_InDomino.get(i), false), gridLayoutParam);
-            }
             else
             {
-                a_InLayout.addView(m_DominoView.imgDominoAccross (a_InDomino.get(i), true), gridLayoutParam);
+                if (a_InDomino.get(i).getM_leftSide() < a_InDomino.get(i).getM_rightSide())
+                {
+                    a_InLayout.addView(m_DominoView.imgDominoAccross (a_InDomino.get(i), false), gridLayoutParam);
+                }
+                else
+                {
+                    a_InLayout.addView(m_DominoView.imgDominoAccross (a_InDomino.get(i), true), gridLayoutParam);
+                }
             }
         }
     }

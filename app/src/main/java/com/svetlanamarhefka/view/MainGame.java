@@ -3,7 +3,6 @@ package com.svetlanamarhefka.view;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +31,6 @@ public class MainGame extends AppCompatActivity {
     private HumanView m_HumanHandView;
     private Round m_Round;
     private Context m_Context;
-    private Matrix m_Matrix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +53,7 @@ public class MainGame extends AppCompatActivity {
         // distribute hands
         distributeHands();
         // get the first player
-        //getFirstPlayer();
+        getFirstPlayer();
     }
 
     private void initLayout()
@@ -70,14 +68,15 @@ public class MainGame extends AppCompatActivity {
         // Display the computer score to the screen
         TextView l_ComputerScore = findViewById(R.id.t_CScore);
 
+
         // Display the human name to the main game screen
         TextView l_HumanName = findViewById(R.id.t_HName_1);
-        l_HumanName.setText(m_Round.playerName().toString() + " ");
+        l_HumanName.setText(m_Round.getPlayerName().toString() + " ");
         // Display the human score to the screen
 
         // Display the human name to the main game screen
         l_HumanName = findViewById(R.id.t_HName_2);
-        l_HumanName.setText(m_Round.playerName().toString() + " ");
+        l_HumanName.setText(m_Round.getPlayerName().toString() + " ");
 
         // show the initial boneyard
         updateBoneyard();

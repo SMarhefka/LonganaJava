@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,7 +32,7 @@ public class DominoView extends View {
 
     public Drawable drawDomino(int a_InSide1, int a_InSide2, boolean a_InHorVer, boolean a_InFlip)
     {
-        Log.v("drawable", "d" + String.valueOf(a_InSide1) + "_" + String.valueOf(a_InSide2));
+        //Log.v("drawable", "d" + String.valueOf(a_InSide1) + "_" + String.valueOf(a_InSide2));
 
         Bitmap final_Bitmap;
 

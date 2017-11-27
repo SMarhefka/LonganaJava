@@ -199,21 +199,19 @@
                         <LinearLayout
                             android:id="@+id/l_Board"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_horizontal"
                             android:orientation="horizontal">
 
-                            <ImageButton
-                                android:id="@+id/b_Button01"
-                                style="@style/ImageButtonCustom"
+                            <ImageView
+                                android:id="@+id/imageView2"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0"
-                                android:scaleType="fitXY"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:src="@drawable/d0_0"
-                                android:visibility="visible" />
-
+                                android:visibility="invisible"
+                                app:srcCompat="@drawable/d0_0h" />
                         </LinearLayout>
 
                         <TextView

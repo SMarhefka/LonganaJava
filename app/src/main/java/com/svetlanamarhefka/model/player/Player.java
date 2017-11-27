@@ -54,15 +54,18 @@ public class Player implements Serializable {
         return m_CurrentHand;
     }
 
-
+    public void clearHand()
+    {
+        m_CurrentHand.clearHand();
+    }
     public boolean playDomino(int a_InDomIndex, Board a_InBoard, Side a_InSide) {
 
         Domino t_Domino = m_CurrentHand.getTilesAtIndex(a_InDomIndex);
 
-        if(t_Domino.isDouble() && t_Domino.getM_leftSide() == a_InBoard.getM_EngineVal())
+        if(t_Domino.isEngine(a_InBoard.getM_EngineValue()))
         {
-            a_InBoard.setM_HasEngine();
-            a_InBoard.addToBoard(t_Domino, a_InSide);
+            a_InBoard.setM_EngineSet();
+            a_InBoard.addEngine(t_Domino, a_InSide);
             m_CurrentHand.removeTile(a_InDomIndex);
             return true;
         }
@@ -71,29 +74,26 @@ public class Player implements Serializable {
             m_CurrentHand.removeTile(a_InDomIndex);
             return true;
         }
-
+        // This should only return if there is an issue
         return false;
     }
 
     public boolean play(int a_InDomIndex, Board a_InBoard, Side a_InSide, boolean a_InPrevPassed)
     {
         Domino t_Domino = m_CurrentHand.getTilesAtIndex(a_InDomIndex);
-
-        // Check to see if the human is playing the engine
-        if(t_Domino.isDouble() && t_Domino.getM_leftSide() == a_InBoard.getM_EngineVal())
-        {
-            // Place the engine
-            System.out.print("Placing the engine");
-            return playDomino(a_InDomIndex, a_InBoard, a_InSide);
-        }
         // If the engine is set
-        if (a_InBoard.isM_HasEngine()) {
+        if (a_InBoard.isM_EngineSet()) {
             System.out.print("Placing domino" + " " + t_Domino.isDouble() + " " + a_InPrevPassed);
 
             if (a_InSide == m_OtherSide && (!t_Domino.isDouble() && !a_InPrevPassed))
             {
                 return false;
             }
+            return playDomino(a_InDomIndex, a_InBoard, a_InSide);
+        }
+        // If the engine is not set but the domino being played is the engine
+        else if(t_Domino.isEngine(a_InBoard.getM_EngineValue()))
+        {
             return playDomino(a_InDomIndex, a_InBoard, a_InSide);
         }
         return false;

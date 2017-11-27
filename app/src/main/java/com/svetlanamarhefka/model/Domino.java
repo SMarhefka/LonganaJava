@@ -66,6 +66,11 @@ public class Domino implements Serializable {
         return (m_leftSide == 0 && m_rightSide == 0);
     }
 
+    public boolean isEngine(int a_InEngine)
+    {
+        return isDouble() && m_leftSide == a_InEngine;
+    }
+
     /**
      * Boolean that checks to see if the tile is a double
      * @return true --> if the tile is a double

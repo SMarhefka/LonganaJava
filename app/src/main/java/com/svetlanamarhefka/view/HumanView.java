@@ -41,15 +41,15 @@ public class HumanView extends View {
         for (int i = 0; i < a_InDomino.size(); i++) {
             if (i >= 14) row = 1;
             col = i % 14;
-            GridLayout.Spec gridRow = GridLayout.spec(row, 1);
+            GridLayout.Spec gridRow = GridLayout.spec(row, 2);
             GridLayout.Spec gridCol = GridLayout.spec(col, 1);
             gridLayoutParam = new GridLayout.LayoutParams(gridRow, gridCol);
-            gridLayoutParam.setMargins(4, 0, 4, 0);
-            a_InLayout.addView(btnDominoUpDwn (a_InDomino.get(i), true), gridLayoutParam);
+            gridLayoutParam.setMargins(5, 0, 5, 0);
+            a_InLayout.addView(addButton (a_InDomino.get(i), true), gridLayoutParam);
         }
     }
 
-    public ImageButton btnDominoUpDwn(final Domino a_InDomino, boolean buttonsEnabled) {
+    public ImageButton addButton(final Domino a_InDomino, boolean buttonsEnabled) {
         ImageButton button = new ImageButton(m_Context);
         button.setLayoutParams(new ViewGroup.LayoutParams(1, 2));
 

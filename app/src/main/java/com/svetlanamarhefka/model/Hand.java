@@ -14,7 +14,7 @@ public class Hand implements Serializable {
     *  was in my original code
     */
     private Vector<Domino> m_PlayerTiles;
-    //private static Vector<Domino> m_SortedHand = new Vector<Domino>();
+    private static Vector<Domino> m_SortedHand = new Vector<Domino>();
     private int m_EngineIndex;
     /**
      * Default constructor
@@ -87,6 +87,10 @@ public class Hand implements Serializable {
         m_PlayerTiles.removeElementAt(a_InTileIndex);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getM_EngineIndex()
     {
         return m_EngineIndex;
@@ -147,8 +151,12 @@ public class Hand implements Serializable {
         return m_PlayerTiles;
     }
 
-    /**
-    private void printHand(int a_PrintType)
+    public void clearHand()
+    {
+        m_PlayerTiles.removeAllElements();
+    }
+
+    public void printHand(int a_PrintType)
     {
         Vector<Domino> tempTiles;
         switch (a_PrintType)
@@ -173,7 +181,8 @@ public class Hand implements Serializable {
         }
         System.out.println(fullString + "\n");
     }
-    */
+
+
     /******************************CAUTION: TESTING AREA**********************************/
     /**
      * Main method to test the methods in hand

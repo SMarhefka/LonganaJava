@@ -37,6 +37,13 @@ public class Round implements Serializable {
         this.m_Boneyard = new Boneyard();
     }
 
+    /**
+     * This is an overloaded Round
+     * @param a_InTourScore
+     * @param a_InRoundNum
+     * @param a_InComputer
+     * @param a_InHuman
+     */
     public Round(int a_InTourScore, int a_InRoundNum, Computer a_InComputer, Human a_InHuman)
     {
         m_TourScore = a_InTourScore;
@@ -52,6 +59,10 @@ public class Round implements Serializable {
         m_PrevPass = false;
     }
 
+    /**
+     * Gets the Tournament Score
+     * @return
+     */
     public int getM_TourScore()
     {
         return m_TourScore;
@@ -62,52 +73,64 @@ public class Round implements Serializable {
         return m_RoundNumber;
     }
 
-    public int getM_EngineValue()
-    {
-        return m_EngineValue;
-    }
-
-    public String playerName()
+    public String getPlayerName()
     {
         return m_Human.getPlayerName();
     }
 
+    /**
+     * Finds the engine that is required to start the round
+     * @return int t_EngineCount --> temporary engine value which
+     * will be used for the round.
+     */
     private int getEngine()
     {
-        int a_count = 1;
-        int a_engineCount = 6;
-        while (a_count != m_RoundNumber)
+        int t_Count = 1;
+        int t_EngineCount = 6;
+        while (t_Count != m_RoundNumber)
         {
-            if (a_engineCount == 0)
+            if (t_EngineCount == 0)
             {
                 // reset the engine count
-                a_engineCount = 6;
+                t_EngineCount = 6;
             }
             else
             {
                 // reduce engine count by 1
-                a_engineCount--;
+                t_EngineCount--;
             }
             // increment the count by 1
-            a_count++;
+            t_Count++;
         }
-        return a_engineCount;
+        return t_EngineCount;
     }
 
+    /**
+     *
+     * @return
+     */
     public Vector<Domino> getBoard()
     {
+        m_Board.printBoard();
         return m_Board.getM_BoardVector();
     }
 
+    /**
+     * Gets the boneyard
+     * @return m_Boneyard.getM_UnusedTiles() --> the tiles in the boneyard
+     */
     public Vector<Domino> getBoneYard()
     {
+        // Method is called for testing reasons
+        m_Boneyard.printBoneyard(0);
         return m_Boneyard.getM_UnusedTiles();
     }
 
     public Vector<Domino> getComHand()
     {
+        m_Computer.getHand().printHand(0);
         return m_Computer.getHand().getM_PlayerTiles();
-        /**
+        /*
          Vector<Domino> tempVector = new Vector<Domino>();
          for(int count = 0; count < m_Computer.getHand().getSize(); count++)
          {
@@ -119,9 +142,13 @@ public class Round implements Serializable {
 
     public Vector<Domino> getHumanHand()
     {
+        m_Human.getHand().printHand(0);
         return m_Human.getHand().getM_PlayerTiles();
     }
 
+    /**
+     * Distributes 8 tiles to both players
+     */
     public void distributeTiles()
     {
         // distribute 8 tiles to each player
@@ -134,9 +161,19 @@ public class Round implements Serializable {
         }
     }
 
+    /**
+     * Determines who the first player is
+     * @return
+     */
     public String firstPlayer()
     {
+        if(m_Board.isM_EngineSet())
+        {
+            return null;
+        }
+
         StringBuilder t_Log = new StringBuilder();
+        m_Board.setM_EngineValue(this.m_EngineValue);
         // While nobody has the engine
         while (!engineInHand(t_Log))
         {
@@ -149,6 +186,7 @@ public class Round implements Serializable {
             t_Log.append("Computer drew: " + m_Computer.getHand().getTilesAtIndex(
                     m_Computer.getHand().getSize() - 1) + "\n");
         }
+        t_Log.append("------------------------------------");
         return t_Log.toString();
     }
 
@@ -161,7 +199,7 @@ public class Round implements Serializable {
                     " has the engine!\n");
             a_InLog.append(m_Human.getPlayerName() + " has the engine ( " +
                     m_EngineValue + "-" + m_EngineValue + " )\n");
-            m_Board.setM_EngineVal(getM_EngineValue());
+
             m_ComputerTurn = false;
             return true;
         }
@@ -169,11 +207,8 @@ public class Round implements Serializable {
         else if(m_Computer.getHand().hasEngine(m_EngineValue))
         {
             System.out.print("Round: " + m_RoundNumber + " Computer has the engine!\n");
-            a_InLog.append(m_Human.getPlayerName() + " has the engine ( " +
+            a_InLog.append(m_Computer.getPlayerName() + " has the engine ( " +
                     m_EngineValue + "-" + m_EngineValue + " )\n");
-
-            m_Board.setM_EngineVal(getM_EngineValue());
-
             m_Computer.playDomino(m_Computer.getHand().getM_EngineIndex(), m_Board,Side.RIGHT);
             m_ComputerTurn = false;
             return true;

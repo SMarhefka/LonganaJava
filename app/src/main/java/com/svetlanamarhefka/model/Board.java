@@ -13,17 +13,15 @@ public class Board implements Serializable {
 
     /* m*/
     private Vector<Domino> m_BoardVector;
-    private boolean m_HasEngine;
-    private int m_EngineVal;
-
+    private int m_EngineValue;
+    private boolean m_EngineSet;
     /**
      * Default Constructor
      */
     public Board()
     {
         this.m_BoardVector = new Vector<Domino>();
-        m_HasEngine = false;
-        m_EngineVal = 0;
+        m_EngineSet = false;
     }
 
     /**
@@ -35,24 +33,24 @@ public class Board implements Serializable {
         this.m_BoardVector = a_inGameBoard;
     }
 
-    public void setM_EngineVal(int a_InEngineVal)
+    public void setM_EngineValue(int a_InEngine)
     {
-        m_EngineVal = a_InEngineVal;
+        m_EngineValue = a_InEngine;
     }
 
-    public int getM_EngineVal()
+    public int getM_EngineValue()
     {
-        return m_EngineVal;
+        return m_EngineValue;
     }
 
-    public void setM_HasEngine()
+    public void setM_EngineSet()
     {
-        m_HasEngine = true;
+        m_EngineSet = true;
     }
 
-    public boolean isM_HasEngine()
+    public boolean isM_EngineSet()
     {
-        return m_HasEngine;
+        return m_EngineSet;
     }
     // this function will add a tile to the begining of the vector
     // in the end it will add a tile to the "left" side of the board
@@ -86,16 +84,9 @@ public class Board implements Serializable {
         return m_BoardVector.elementAt(m_BoardVector.size()).getM_rightSide();
     }
 
-
-    public boolean addToBoard(Domino a_InDomino, Side a_InSide)
+    public boolean addEngine(Domino a_InDomino, Side a_InSide)
     {
-        // If there is no engine on the board
-        if(!m_HasEngine)
-        {
-            return false;
-        }
-        // If the engine has been found and the board is empty
-        if(m_HasEngine && m_BoardVector.isEmpty())
+        if(a_InDomino.isEngine(m_EngineValue))
         {
             // If the side selected is Left and the domino is valid
             if(a_InSide == Side.LEFT)
@@ -107,6 +98,16 @@ public class Board implements Serializable {
                 addToRight(a_InDomino);
             }
             return true;
+        }
+        return false;
+    }
+
+    public boolean addToBoard(Domino a_InDomino, Side a_InSide)
+    {
+        // If there is no engine on the board
+        if(!m_EngineSet)
+        {
+            return false;
         }
         // Check to make sure that the domino is valid
         Domino checkDomino = checkDominoAgainstBoard(a_InDomino, a_InSide);
@@ -128,7 +129,7 @@ public class Board implements Serializable {
     public boolean validDomino(Domino a_InDomino, Side a_InSide)
     {
         // If the board doesn't have the engine
-        if(!m_HasEngine)
+        if(!m_EngineSet)
         {
             return false;
         }
@@ -137,7 +138,7 @@ public class Board implements Serializable {
 
     public Domino checkDominoAgainstBoard(Domino a_InDomino, Side a_InSide)
     {
-        if (!m_HasEngine)
+        if (!m_EngineSet)
             return null;
         if(a_InSide == Side.LEFT)
         {
@@ -271,7 +272,7 @@ public class Board implements Serializable {
     }
 
     // this function will print the curent board to the screen
-    private void printBoard()
+    public void printBoard()
     {
         String fullString = "";
 
