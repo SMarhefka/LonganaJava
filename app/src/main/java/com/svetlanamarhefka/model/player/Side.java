@@ -1,4 +1,4 @@
-package com.svetlanamarhefka.model;
+package com.svetlanamarhefka.model.player;
 
 import java.io.Serializable;
 

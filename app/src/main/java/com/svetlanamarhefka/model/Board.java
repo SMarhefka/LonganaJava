@@ -1,5 +1,7 @@
 package com.svetlanamarhefka.model;
 
+import com.svetlanamarhefka.model.player.Side;
+
 import java.io.Serializable;
 import java.util.Vector;
 /****************************************************************

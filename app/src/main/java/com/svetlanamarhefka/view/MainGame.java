@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.svetlanamarhefka.R;
 import com.svetlanamarhefka.model.Domino;
 import com.svetlanamarhefka.model.Round;
+import com.svetlanamarhefka.model.player.Side;
 
 import java.util.Vector;
 
@@ -25,10 +29,12 @@ import java.util.Vector;
 
 public class MainGame extends AppCompatActivity {
 
+    private DominoView m_DominoView;
     private BoardView m_BoardView;
     private BoneyardView m_BoneView;
     private ComputerView m_ComHandView;
     private HumanView m_HumanHandView;
+
     private Round m_Round;
     private Context m_Context;
 
@@ -43,6 +49,7 @@ public class MainGame extends AppCompatActivity {
         m_Round = (Round) l_intent.getSerializableExtra("EXTRA_ROUND");
         m_Context = this.getApplicationContext();
 
+        m_DominoView = new DominoView(m_Context);
         m_BoardView = new BoardView(m_Context);
         m_BoneView = new BoneyardView(m_Context);
         m_ComHandView = new ComputerView(m_Context);
@@ -67,7 +74,6 @@ public class MainGame extends AppCompatActivity {
 
         // Display the computer score to the screen
         TextView l_ComputerScore = findViewById(R.id.t_CScore);
-
 
         // Display the human name to the main game screen
         TextView l_HumanName = findViewById(R.id.t_HName_1);
@@ -98,14 +104,14 @@ public class MainGame extends AppCompatActivity {
                     .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            //normalizePlayTurn();
-                            System.out.print("Continue pressed...So far so good!");
+                            setNextTurn();
+                            System.out.print("Continue pressed!");
                         }
                     });
             //save and quit, normalize the firstPlayer
             messages.show();
         } else {
-            //normalizePlayTurn();
+            setNextTurn();
             System.out.print("In the else statment...Everything is okay!");
         }
     }
@@ -114,6 +120,7 @@ public class MainGame extends AppCompatActivity {
     {
         System.out.print("Draw Button Pressed");
     }
+
 
     private void updateLayout()
     {
@@ -144,6 +151,7 @@ public class MainGame extends AppCompatActivity {
         // display new boneyard
         m_BoneView.displayBoneyard(t_Boneyard, l_Boneyard);
     }
+
     private void updateHumanHand()
     {
         Vector<Domino> t_HumanHand = m_Round.getHumanHand();
@@ -151,6 +159,7 @@ public class MainGame extends AppCompatActivity {
         l_HumanHand.removeAllViews();
         m_HumanHandView.displayHand(t_HumanHand, l_HumanHand);
     }
+
     private void updateComputerHand()
     {
         Vector<Domino> t_ComHand = m_Round.getComHand();
@@ -159,22 +168,72 @@ public class MainGame extends AppCompatActivity {
         m_ComHandView.displayHand(t_ComHand, l_ComHand);
     }
 
+    protected void setNextTurn()
+    {
+        String playerResult = m_Round.setHumanTurn();
+        if(playerResult != null)
+        {
+            updateLayout();
+            Toast.makeText(MainGame.this, playerResult, Toast.LENGTH_LONG).show();
+        }
+    }
+
     /**
      * Plays the move and updates the view
      * @param a_InDomino domino to play
      * @param a_InSide side to play
      * @return true if move was possible, false if not
      */
-    /*
-    private boolean playRound(Domino a_InDomino, Side a_InSide) {
-        String message = m_Round.play(a_InDomino, a_InSide);
+
+    protected boolean playRound(Domino a_InDomino, Side a_InSide) {
+        String message = m_Round.humanPlay(a_InDomino, a_InSide);
         if (message != null) {
             Toast toast = Toast.makeText(MainGame.this, message, Toast.LENGTH_LONG);
             toast.show();
             return false;
         }
-        refreshLayout();
+        updateLayout();
         return true;
     }
-    */
+
+    public ImageButton addButton(final Domino a_InDomino, boolean buttonsEnabled) {
+        ImageButton button = new ImageButton(m_Context);
+        button.setLayoutParams(new ViewGroup.LayoutParams(1, 2));
+
+        if (buttonsEnabled) {
+            //eventListenerForButton
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder sideSelector = new AlertDialog.Builder(MainGame.this);
+                    sideSelector.setMessage("Select a side to play: ")
+                            .setPositiveButton("RIGHT", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    if (playRound(a_InDomino, Side.RIGHT)) {
+                                        {
+                                            setNextTurn();
+                                        }
+                                    }
+                                }
+                            })
+                            .setNegativeButton("LEFT", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (playRound(a_InDomino, Side.LEFT)) {
+                                        {
+                                            setNextTurn();
+                                        }
+                                    }
+                                }
+                            });
+                    sideSelector.show();
+                }
+            });
+        }
+
+        button.setBackground(m_DominoView.drawDomino(a_InDomino.getM_leftSide(), a_InDomino.getM_rightSide(), true, false));
+        return button;
+    }
 }

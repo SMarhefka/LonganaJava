@@ -16,6 +16,7 @@ public class Hand implements Serializable {
     private Vector<Domino> m_PlayerTiles;
     private static Vector<Domino> m_SortedHand = new Vector<Domino>();
     private int m_EngineIndex;
+
     /**
      * Default constructor
      */
@@ -40,8 +41,10 @@ public class Hand implements Serializable {
         // go through the vector and find the tile that is going to be deleted.
         for (int itemVal = 0; itemVal != m_PlayerTiles.size(); itemVal++)
         {
-            if(m_PlayerTiles.get(itemVal).equals(a_InDomino))
+            Domino t_Domino = m_PlayerTiles.get(itemVal);
+            if (t_Domino.equals(a_InDomino))
             {
+                System.out.print("Tiles the same: " + t_Domino.equals(a_InDomino) + "\n");
                 return itemVal;
             }
         }

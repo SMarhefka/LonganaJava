@@ -1,7 +1,5 @@
 package com.svetlanamarhefka.model.player;
 
-import com.svetlanamarhefka.model.Side;
-
 /****************************************************************
  * Name:    Svetlana Marhefka                                   *
  * Project: Project 2 - Longana                                 *

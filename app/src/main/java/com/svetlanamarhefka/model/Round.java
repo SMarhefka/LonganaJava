@@ -2,6 +2,7 @@ package com.svetlanamarhefka.model;
 
 import com.svetlanamarhefka.model.player.Computer;
 import com.svetlanamarhefka.model.player.Human;
+import com.svetlanamarhefka.model.player.Side;
 
 import java.io.Serializable;
 import java.util.Vector;
@@ -79,6 +80,25 @@ public class Round implements Serializable {
     }
 
     /**
+     * To get the score for a particular player
+     * @param a_InPlayer Class for the player to get the score for
+     * @return score for the player
+     */
+    public int getPlayerScore(Class a_InPlayer) {
+        // If the player is the computer
+        if (a_InPlayer == Computer.class)
+        {
+            return m_Computer.getM_PlayerScore();
+        }
+        // Otherwise get the score associated with the computer
+        else if (a_InPlayer == Human.class)
+        {
+            return m_Human.getM_PlayerScore();
+        }
+        return -1;
+    }
+
+    /**
      * Finds the engine that is required to start the round
      * @return int t_EngineCount --> temporary engine value which
      * will be used for the round.
@@ -146,6 +166,7 @@ public class Round implements Serializable {
         return m_Human.getHand().getM_PlayerTiles();
     }
 
+
     /**
      * Distributes 8 tiles to both players
      */
@@ -209,22 +230,74 @@ public class Round implements Serializable {
             System.out.print("Round: " + m_RoundNumber + " Computer has the engine!\n");
             a_InLog.append(m_Computer.getPlayerName() + " has the engine ( " +
                     m_EngineValue + "-" + m_EngineValue + " )\n");
-            m_Computer.playDomino(m_Computer.getHand().getM_EngineIndex(), m_Board,Side.RIGHT);
+            m_Computer.playDomino(m_Computer.getHand().getM_EngineIndex(), m_Board, Side.RIGHT);
             m_ComputerTurn = false;
             return true;
         }
         return false;
     }
 
-    //
+
+
+    /**
+     *
+     * @return
+     */
     public String setHumanTurn()
     {
         if (m_ComputerTurn)
         {
             // set the computer turn to false
             m_ComputerTurn = false;
+            // Play the computer turns
+            return computerPlay();
         }
         // otherwise don't return anything
+        return null;
+    }
+
+    private String computerPlay()
+    {
+        if(!m_Computer.play(m_Board, m_PrevPass))
+        {
+            System.out.print("Computer doesn't have a valid move");
+            // if the boneyard is empty then the computer has to pass it's turn
+            if(m_Boneyard.isEmpty())
+            {
+                passTurn();
+                return "Stock is empty and there are no valid moves!";
+            }
+
+            // Get a domino from the boneyard
+            Domino t_Domino = m_Boneyard.dealTile();
+            // Place it into the computer hand
+            m_Computer.takeDomino(t_Domino);
+            // If the computer still can't make a move
+            if (!m_Computer.play(m_Board, m_PrevPass))
+            {
+                // pass the turn
+                passTurn();
+                return "Computer still can't do anything";
+            }
+
+            resetPass();
+            m_Computer.resetDrawDomino();
+            return "Computer made it's move";
+        }
+        resetPass();
+        return "Computer is done...now for the human move";
+    }
+
+    public String humanPlay(Domino a_InDomino, Side a_InSide)
+    {
+        if(!m_Human.play(m_Human.getHand().getDomIndex(a_InDomino), m_Board, a_InSide, m_PrevPass))
+        {
+            return "Error: Invalid Move!";
+        }
+        resetPass();
+        m_Human.resetDrawDomino();
+        m_ComputerTurn = true;
+        // return nothing because the play was valid
         return null;
     }
 
@@ -238,7 +311,7 @@ public class Round implements Serializable {
         {
             return false;
         }
-        m_Human.unsetDominoTaken();
+        m_Human.resetDrawDomino();
         m_ComputerTurn = true;
         return true;
     }
@@ -261,20 +334,25 @@ public class Round implements Serializable {
         // if the Boneyard is empty
         if(m_Boneyard.isEmpty())
         {
+            // Set the domino taken boolean
             m_Human.setM_DominoTaken();
+            // Return nothing
             return null;
         }
-
+        // Get a domino from the boneyard
         Domino t_Domino = m_Boneyard.dealTile();
+        // Place it into the human hand
         m_Human.takeDomino(t_Domino);
         return t_Domino;
     }
+
 
     private void passTurn()
     {
         m_PrevPass = true;
         m_PassCount++;
     }
+
 
     private void resetPass()
     {

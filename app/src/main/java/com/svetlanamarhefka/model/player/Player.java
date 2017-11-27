@@ -3,9 +3,10 @@ package com.svetlanamarhefka.model.player;
 import com.svetlanamarhefka.model.Board;
 import com.svetlanamarhefka.model.Domino;
 import com.svetlanamarhefka.model.Hand;
-import com.svetlanamarhefka.model.Side;
+import com.svetlanamarhefka.model.PlayFunctions;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 /****************************************************************
  * Name:    Svetlana Marhefka                                   *
@@ -23,6 +24,8 @@ public class Player implements Serializable {
     // The name of the player.
     protected String playerName;
 
+    private PlayFunctions m_PlayFunctions;
+
     // The defaultSide for the given player
     Side m_DefaultSide;
     // The non-default side for the given player
@@ -34,6 +37,7 @@ public class Player implements Serializable {
         m_CurrentHand = new Hand();
         m_DominoTaken = false;
         m_PlayerScore = 0;
+        m_PlayFunctions = new PlayFunctions();
     }
 
     /**
@@ -47,6 +51,15 @@ public class Player implements Serializable {
 
     /**
      *
+     * @return
+     */
+    public int getM_PlayerScore()
+    {
+        return m_PlayerScore;
+    }
+
+    /**
+     *
      * @return m_CurrentHand
      */
     public Hand getHand()
@@ -54,10 +67,6 @@ public class Player implements Serializable {
         return m_CurrentHand;
     }
 
-    public void clearHand()
-    {
-        m_CurrentHand.clearHand();
-    }
     public boolean playDomino(int a_InDomIndex, Board a_InBoard, Side a_InSide) {
 
         Domino t_Domino = m_CurrentHand.getTilesAtIndex(a_InDomIndex);
@@ -104,17 +113,13 @@ public class Player implements Serializable {
         m_PlayerScore += a_InScore;
     }
 
+    /**
+     * Sets m_DominoTaken to true so that the program knows that a
+     * tile has been taken from the boneyard
+     */
     public void setM_DominoTaken()
     {
         m_DominoTaken = true;
-    }
-
-    /**
-     * Sets the m_DominoTaken variable to false
-     */
-    public void unsetDominoTaken()
-    {
-        m_DominoTaken = false;
     }
 
     /**
@@ -126,6 +131,25 @@ public class Player implements Serializable {
         return m_DominoTaken;
     }
 
+    /**
+     * Sets the m_DominoTaken variable back to false
+     */
+    public void resetDrawDomino()
+    {
+        m_DominoTaken = false;
+    }
+
+
+    protected PlayerMove playMove(Board a_InBoard, Boolean a_InPrevPassed)
+    {
+        StringBuilder hintStrat = new StringBuilder();
+        //getiing the list of all the possible moves given this state of the game
+        Vector<PlayerMove> possibleMoves = m_PlayFunctions.possibleMoves (a_InBoard, a_InPrevPassed, this, m_DefaultSide, m_OtherSide);
+
+        PlayerMove bestMove = possibleMoves.firstElement();
+
+        return bestMove;
+    }
 
     public void takeDomino(Domino a_InDomino)
     {
@@ -135,6 +159,17 @@ public class Player implements Serializable {
         m_CurrentHand.addTileToHand(a_InDomino);
     }
 
+    public void clearHand()
+    {
+        m_CurrentHand.clearHand();
+    }
+
+    /**
+     *
+     * @param a_InBoard
+     * @param a_InPrevPassed
+     * @return
+     */
     public boolean validMove(Board a_InBoard, boolean a_InPrevPassed)
     {
         // Go through the entire hand
@@ -162,5 +197,7 @@ public class Player implements Serializable {
         System.out.print(this.getPlayerName() + " has no valid moves");
         return false;
     }
+
+
 
 }

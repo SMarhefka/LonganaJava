@@ -2,11 +2,8 @@ package com.svetlanamarhefka.view;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.svetlanamarhefka.model.Domino;
 
@@ -45,26 +42,7 @@ public class HumanView extends View {
             GridLayout.Spec gridCol = GridLayout.spec(col, 1);
             gridLayoutParam = new GridLayout.LayoutParams(gridRow, gridCol);
             gridLayoutParam.setMargins(5, 0, 5, 0);
-            a_InLayout.addView(addButton (a_InDomino.get(i), true), gridLayoutParam);
+            a_InLayout.addView(m_MainView.addButton (a_InDomino.get(i), true), gridLayoutParam);
         }
-    }
-
-    public ImageButton addButton(final Domino a_InDomino, boolean buttonsEnabled) {
-        ImageButton button = new ImageButton(m_Context);
-        button.setLayoutParams(new ViewGroup.LayoutParams(1, 2));
-
-        if (buttonsEnabled) {
-            //eventListenerForButton
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(m_Context, "Clicked on image button", Toast.LENGTH_SHORT).show();
-                    System.out.print("I've been clicked!!");
-                }
-            });
-        }
-
-        button.setBackground(m_DominoView.drawDomino(a_InDomino.getM_leftSide(), a_InDomino.getM_rightSide(), true, false));
-        return button;
     }
 }
