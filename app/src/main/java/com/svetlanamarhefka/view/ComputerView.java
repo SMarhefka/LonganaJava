@@ -16,7 +16,7 @@ import java.util.Vector;
  * Date:    11/17/2017                                             *
  ****************************************************************/
 
-public class ComputerView extends View {
+public class ComputerView extends View{
 
     private DominoView m_DominoView;
     private Context m_Context;

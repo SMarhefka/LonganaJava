@@ -33,12 +33,12 @@ public class Domino implements Serializable {
      * Reverses the ends of a domino tile
      * @return nothing
      */
-    public void flipTile()
+    public Domino flipTile()
     {
-        int temp = m_leftSide;
-        m_leftSide = m_rightSide;
-        m_rightSide = temp;
-        //return new Domino(m_leftSide, m_rightSide);
+        //int temp = m_leftSide;
+        //m_leftSide = m_rightSide;
+        //m_rightSide = temp;
+        return new Domino(m_rightSide, m_leftSide);
     }
 
     /**

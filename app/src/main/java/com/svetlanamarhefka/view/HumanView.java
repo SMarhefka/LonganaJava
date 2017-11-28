@@ -38,7 +38,7 @@ public class HumanView extends View {
         for (int i = 0; i < a_InDomino.size(); i++) {
             if (i >= 14) row = 1;
             col = i % 14;
-            GridLayout.Spec gridRow = GridLayout.spec(row, 2);
+            GridLayout.Spec gridRow = GridLayout.spec(row, 1);
             GridLayout.Spec gridCol = GridLayout.spec(col, 1);
             gridLayoutParam = new GridLayout.LayoutParams(gridRow, gridCol);
             gridLayoutParam.setMargins(5, 0, 5, 0);

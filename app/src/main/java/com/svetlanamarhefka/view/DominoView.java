@@ -71,7 +71,15 @@ public class DominoView extends View {
     {
         ImageView t_Image = new ImageView(m_Context);
         t_Image.setLayoutParams(new ViewGroup.LayoutParams(1, 2));
-        t_Image.setBackground(drawDomino(a_InDomino.getM_leftSide(), a_InDomino.getM_rightSide(), false, a_InFlip));
+        if (a_InDomino.getM_leftSide() < a_InDomino.getM_rightSide())
+        {
+            t_Image.setBackground(drawDomino(a_InDomino.getM_leftSide(), a_InDomino.getM_rightSide(), false, a_InFlip));
+        }
+        else if (a_InDomino.getM_leftSide() > a_InDomino.getM_rightSide())
+        {
+            t_Image.setBackground(drawDomino(a_InDomino.getM_rightSide(), a_InDomino.getM_leftSide(), false, a_InFlip));
+        }
+
         return t_Image;
     }
 }

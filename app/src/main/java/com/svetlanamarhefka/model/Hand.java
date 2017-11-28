@@ -1,6 +1,8 @@
 package com.svetlanamarhefka.model;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 /****************************************************************
  * Name:    Svetlana Marhefka                                   *
@@ -91,15 +93,6 @@ public class Hand implements Serializable {
     }
 
     /**
-     *
-     * @return
-     */
-    public int getM_EngineIndex()
-    {
-        return m_EngineIndex;
-    }
-
-    /**
      * NOT ENTIRELY SURE IF WE WILL NEED THIS
      * @param a_InIndex --> The index value at which to retrieve a tile
      * @return Domino --> returns a Domino tile object
@@ -107,6 +100,15 @@ public class Hand implements Serializable {
     public Domino getTilesAtIndex(int a_InIndex)
     {
         return m_PlayerTiles.get(a_InIndex);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getM_EngineIndex()
+    {
+        return m_EngineIndex;
     }
 
     /**
@@ -138,6 +140,63 @@ public class Hand implements Serializable {
     {
         return m_PlayerTiles.isEmpty();
     }
+
+    public void resetHand()
+    {
+        Vector<Domino> t_PlayerTiles = new Vector<>();
+        for(Domino t_Domino: m_PlayerTiles)
+        {
+            if(t_Domino.getM_leftSide() > t_Domino.getM_leftSide())
+            {
+                t_Domino.flipTile();
+            }
+            t_PlayerTiles.add(t_Domino);
+        }
+        m_PlayerTiles = t_PlayerTiles;
+    }
+
+    /**
+     * THIS FUNCTION MAY NEVER NEED TO BE USED
+     * @return
+     */
+    public Vector<Domino> getM_SortedTiles(Vector<Domino> a_InVector)
+    {
+        m_SortedHand.removeAllElements();
+        m_SortedHand = a_InVector;
+        sortItems(m_SortedHand);
+        return m_SortedHand;
+    }
+
+    /**
+     * Sorts the the boneyard for easier printing and visualization
+     * @param a_InVector --> Vector that will be sorted by the function
+     */
+    public void sortItems(Vector<Domino> a_InVector)
+    {
+        Collections.sort(a_InVector, new Comparator()
+        {
+            // New comparison operator
+            public int compare(Object dom1, Object dom2)
+            {
+                Integer left1 = ((Domino)dom1).getM_leftSide();
+                Integer left2 = ((Domino)dom2).getM_leftSide();
+                int resultComp = left1.compareTo(left2);
+                // This sorts according to the left hand side
+                if(resultComp != 0)
+                {
+                    return resultComp;
+                }
+                else
+                {
+                    // This will sort by the right hand side
+                    Integer right1 = ((Domino)dom1).getM_rightSide();
+                    Integer right2 = ((Domino)dom2).getM_rightSide();
+                    return right1.compareTo(right2);
+                }
+            }
+        });
+    }
+
 
     public int getHandTotal()
     {

@@ -149,23 +149,18 @@ public class Round implements Serializable {
     public Vector<Domino> getComHand()
     {
         m_Computer.getHand().printHand(0);
+        m_Computer.getHand().resetHand();
+        m_Computer.getHand().printHand(0);
         return m_Computer.getHand().getM_PlayerTiles();
-        /*
-         Vector<Domino> tempVector = new Vector<Domino>();
-         for(int count = 0; count < m_Computer.getHand().getSize(); count++)
-         {
-         tempVector.add(m_Computer.getHand().getTilesAtIndex(count));
-         }
-         return tempVector;
-         */
     }
 
     public Vector<Domino> getHumanHand()
     {
         m_Human.getHand().printHand(0);
+        m_Human.getHand().resetHand();
+        m_Human.getHand().printHand(0);
         return m_Human.getHand().getM_PlayerTiles();
     }
-
 
     /**
      * Distributes 8 tiles to both players

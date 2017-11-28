@@ -175,6 +175,8 @@ public class MainGame extends AppCompatActivity {
         {
             updateLayout();
             Toast.makeText(MainGame.this, playerResult, Toast.LENGTH_LONG).show();
+            findViewById(android.R.id.content).invalidate();
+
         }
     }
 

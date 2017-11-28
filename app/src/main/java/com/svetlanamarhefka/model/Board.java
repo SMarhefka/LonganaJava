@@ -83,7 +83,7 @@ public class Board implements Serializable {
     // this function will retrieve the right most value of the board
     private int boardRight()
     {
-        return m_BoardVector.elementAt(m_BoardVector.size()).getM_rightSide();
+        return m_BoardVector.elementAt(m_BoardVector.size() - 1).getM_rightSide();
     }
 
     public boolean addEngine(Domino a_InDomino, Side a_InSide)
@@ -150,8 +150,7 @@ public class Board implements Serializable {
             }
             else if(boardLeft() == a_InDomino.getM_leftSide())
             {
-                a_InDomino.flipTile();
-                return a_InDomino;
+                return a_InDomino.flipTile();
             }
 
         }
@@ -163,8 +162,7 @@ public class Board implements Serializable {
             }
             else if(boardRight() == a_InDomino.getM_rightSide())
             {
-                a_InDomino.flipTile();
-                return a_InDomino;
+                return a_InDomino.flipTile();
             }
         }
         else return null;
