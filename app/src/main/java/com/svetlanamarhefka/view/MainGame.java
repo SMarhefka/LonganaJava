@@ -48,7 +48,7 @@ public class MainGame extends AppCompatActivity {
         // Gets the round from the Start Screen Activity
         m_Round = (Round) l_intent.getSerializableExtra("EXTRA_ROUND");
         m_Context = this.getApplicationContext();
-
+        // Get the views needed to display to the board
         m_DominoView = new DominoView(m_Context);
         m_BoardView = new BoardView(m_Context);
         m_BoneView = new BoneyardView(m_Context);
@@ -57,6 +57,7 @@ public class MainGame extends AppCompatActivity {
 
         // initialize the layout
         initLayout();
+        Toast.makeText(MainGame.this, "Ready to Distribute Tiles", Toast.LENGTH_LONG).show();
         // distribute hands
         distributeHands();
         // get the first player
@@ -112,7 +113,7 @@ public class MainGame extends AppCompatActivity {
             messages.show();
         } else {
             setNextTurn();
-            System.out.print("In the else statment...Everything is okay!");
+            System.out.print("In the else statement...Everything is okay!");
         }
     }
 

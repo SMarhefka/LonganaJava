@@ -113,25 +113,6 @@ public class Boneyard implements Serializable {
     }
 
     /**
-     * THIS FUNCTION MAY NEVER NEED TO BE USED
-     * @return
-
-    private void setM_SortedTiles(Vector<Domino> a_InVector)
-    {
-        m_SortedTiles = sortItems(a_InVector);
-    }
-     */
-    /**
-     * THIS FUNCTION MAY NEVER NEED TO BE USED
-     * @return
-
-    public Vector<Domino> getM_SortedTiles(Vector<Domino> a_InVector)
-    {
-        setM_SortedTiles(a_InVector);
-        return m_SortedTiles;
-    }
-    */
-    /**
      * Sorts the the boneyard for easier printing and visualization
      * @param a_InVector --> Vector that will be sorted by the function
      */
@@ -140,23 +121,6 @@ public class Boneyard implements Serializable {
 
         Collections.sort(a_InVector, new Comparator()
         {
-            /*
-            public int compare(Object dom1, Object dom2)
-            {
-                Integer tileSum1 = ((Domino)dom1).tileSum();
-                Integer tileSum2 = ((Domino)dom2).tileSum();
-
-                if(tileSum1 == tileSum2)
-                {
-                    Integer left1 = ((Domino)dom1).getLeft();
-                    Integer left2 = ((Domino)dom2).getLeft();
-                    return left1.compareTo(left2);
-                }
-                int sComp = tileSum1.compareTo(tileSum2);
-                return sComp;
-            }
-            */
-
             // New comparison operator
             public int compare(Object dom1, Object dom2)
             {
@@ -179,7 +143,6 @@ public class Boneyard implements Serializable {
         });
     }
 
-
     /**
      * Print the boneyard
      */
@@ -194,7 +157,7 @@ public class Boneyard implements Serializable {
                 System.out.print("Boneyard Sorted\n");
                 break;
             default:
-                System.out.print("Boneyard Unsorted\n");
+                System.out.print("Boneyard\n");
         }
         String fullString = "";
 

@@ -75,13 +75,13 @@ public class Board implements Serializable {
     }
 
     // this function will retrieve the left most value of the board
-    private int boardLeft()
+    public int boardLeft()
     {
         return m_BoardVector.elementAt(0).getM_leftSide();
     }
 
     // this function will retrieve the right most value of the board
-    private int boardRight()
+    public int boardRight()
     {
         return m_BoardVector.elementAt(m_BoardVector.size() - 1).getM_rightSide();
     }
@@ -169,101 +169,17 @@ public class Board implements Serializable {
         return null;
     }
 
-    public boolean addTileBack(Domino a_InTile)
+    public void undoPlacement(Side a_InSide)
     {
-        // If the RIGHT side of the BOARD doesn't match up with the left or the right side
-        // of the tile then it isn't valid for that side
-        if ((boardRight() != a_InTile.getM_leftSide()) && (boardRight() != a_InTile.getM_rightSide()))
+        if(a_InSide == Side.LEFT)
         {
-            System.out.println("Invalid tile: " + a_InTile.toString() + " not appendable\n");
-            return false;
+            m_BoardVector.removeElementAt(0);
         }
 
-        /**
-        // If the right side of the board == to the left side of the tile --> just add
-        if(boardRight() == a_InTile.getLeft())
+        if(a_InSide == Side.RIGHT)
         {
-            m_boardVector.add(a_InTile);
+            m_BoardVector.removeElementAt(m_BoardVector.size() - 1);
         }
-        // otherwise turn the tile around
-        else
-        {
-            a_InTile.flipTile();
-            m_boardVector.add(a_InTile);
-        }
-        */
-        // SHOULD BE THE SAME AS
-        if(boardRight() == a_InTile.getM_rightSide())
-        {
-            a_InTile.flipTile();
-        }
-        addToRight(a_InTile);
-        //m_boardVector.add(a_InTile);
-        System.out.println("Tile: " + a_InTile.toString() + " appended successfully\n");
-        return true;
-    }
-
-    public boolean addTileFront(Domino a_InTile)
-    {
-        // If the LEFT side of the BOARD doesn't match up with the left or the right side
-        // of the tile then it isn't valid for that side
-        if ((boardLeft() != a_InTile.getM_leftSide()) && (boardLeft() != a_InTile.getM_rightSide()))
-        {
-            System.out.println("Invalid tile: " + a_InTile.toString() + " not placeable\n");
-            return false;
-        }
-        /**
-        // If the LEFT SIDE of the BOARD == to the RIGHT SIDE of the TILE --> just add
-        if(boardLeft() == a_InTile.getRight())
-        {
-            m_boardVector.add(0, a_InTile);
-        }
-        // otherwise turn the tile around
-        else
-        {
-            a_InTile.flipTile();
-            m_boardVector.add(a_InTile);
-        }
-        */
-
-        // SHOULD BE THE SAME AS
-        if(boardLeft() == a_InTile.getM_leftSide())
-        {
-            a_InTile.flipTile();
-        }
-        //m_boardVector.add(0, a_InTile);
-        addToLeft(a_InTile);
-        System.out.println("Tile: " + a_InTile.toString() + " added successfully\n");
-        return true;
-    }
-
-    public boolean addDoubleTile(Domino a_InTile, Side a_InSide)
-    {
-        // If the tile is not a double
-        if(!a_InTile.isDouble())
-        {
-            System.out.println("Invalid double: " + a_InTile.toString());
-            return false;
-        }
-        // If the side selected is LEFT --> check the tile against the LEFT side of the board
-        // Because it is a double
-        if(a_InSide.equals("L") && (boardLeft() == a_InTile.getM_leftSide()))
-        {
-            System.out.println("Double: " + a_InTile.toString() + "prepended to layout (added to the left).");
-            // m_boardVector.add(0, a_InTile);
-            addToLeft(a_InTile);
-            return true;
-        }
-        // If the side selected is RIGHT --> check the tile against the RIGHT side of the board
-        if(a_InSide.equals("R") && (boardRight() == a_InTile.getM_rightSide()))
-        {
-            System.out.println("Double: " + a_InTile.toString() + "appended to layout (added to the right).");
-            // m_boardVector.add(0, a_InTile);
-            addToRight(a_InTile);
-            return true;
-
-        }
-        return false;
     }
 
     public Vector<Domino> getM_BoardVector()

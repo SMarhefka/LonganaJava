@@ -23,6 +23,8 @@ public class Player implements Serializable {
     protected Hand m_CurrentHand;
     // The name of the player.
     protected String playerName;
+    // The sorted hand
+    Vector<PlayerMove> m_PossibleMoves;
 
     private PlayFunctions m_PlayFunctions;
 
@@ -142,14 +144,55 @@ public class Player implements Serializable {
 
     protected PlayerMove playMove(Board a_InBoard, Boolean a_InPrevPassed)
     {
-        StringBuilder hintStrat = new StringBuilder();
-        //getiing the list of all the possible moves given this state of the game
-        Vector<PlayerMove> possibleMoves = m_PlayFunctions.possibleMoves (a_InBoard, a_InPrevPassed, this, m_DefaultSide, m_OtherSide);
+        StringBuilder playerMove = new StringBuilder();
 
-        PlayerMove bestMove = possibleMoves.firstElement();
+        m_PossibleMoves = new Vector<PlayerMove>();
+        // Getting the list of all the possible moves starting at the begging of the hand
+        m_PossibleMoves = m_PlayFunctions.getBestMoves (a_InBoard, a_InPrevPassed, this, m_DefaultSide, m_OtherSide);
 
-        return bestMove;
+        // If the vector has no moves return nothing
+        if(m_PossibleMoves.isEmpty())
+        {
+            // return null;
+            return null;
+        }
+        // Otherwise sort based on the tile sum
+        m_PossibleMoves = m_PlayFunctions.sortBasedOnScore(m_PossibleMoves);
+
+        PlayerMove testMove = m_PossibleMoves.firstElement();
+
+        if(testMove.getM_PlaySide() == Side.EITHER)
+        {
+            int t_LeftSide = m_PlayFunctions.bestSideToPlay(new PlayerMove(testMove.getM_Domino(), Side.LEFT),
+                    a_InBoard, a_InPrevPassed, this, m_DefaultSide, m_OtherSide);
+            int t_RightSide = m_PlayFunctions.bestSideToPlay(new PlayerMove(testMove.getM_Domino(), Side.RIGHT),
+                    a_InBoard, a_InPrevPassed, this, m_DefaultSide, m_OtherSide);
+
+            if (t_LeftSide < t_RightSide)
+            {
+                // if the left hand side is less than the right hand side
+                // then that means that the best side to play is on the right
+                testMove.setM_PlaySide(Side.RIGHT);
+
+            }
+            else if(t_LeftSide > t_RightSide)
+            {
+                // if the left hand side is greater than the right hand side
+                // then that means that the best side to play is on the left
+                testMove.setM_PlaySide(Side.LEFT);
+            }
+            else
+            {
+                // if the left hand side is greater than the right hand side
+                // then that means that the best side to play is on the left
+                testMove.setM_PlaySide(m_OtherSide);
+            }
+        }
+
+        return testMove;
     }
+
+
 
     public void takeDomino(Domino a_InDomino)
     {

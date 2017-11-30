@@ -206,6 +206,7 @@ public class StartScreen extends AppCompatActivity {
         //startActivity(intent);
 
         m_Tournament.setM_TourScore(150);
+        m_Tournament.setM_RoundNumber(6);
         m_Tournament.setM_PlayerName("Lana");
         m_Tournament.createPlayers();
         startNewRound(m_Tournament.createNewRound());

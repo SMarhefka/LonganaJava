@@ -33,7 +33,7 @@ public class Round implements Serializable {
     public Round()
     {
         this.m_TourScore = 150;
-        this.m_RoundNumber = 1;
+        this.m_RoundNumber = 6;
         this.m_EngineValue = getEngine();
         this.m_Boneyard = new Boneyard();
     }
@@ -143,14 +143,19 @@ public class Round implements Serializable {
     {
         // Method is called for testing reasons
         m_Boneyard.printBoneyard(0);
+        // Method is called for testing reasons
+        //m_Boneyard.printBoneyard(1);
         return m_Boneyard.getM_UnusedTiles();
     }
 
     public Vector<Domino> getComHand()
     {
+        Vector<Domino> t_ComHand;
         m_Computer.getHand().printHand(0);
         m_Computer.getHand().resetHand();
+        m_Computer.getHand().sortForDisplay(m_Computer.getHand().getM_PlayerTiles());
         m_Computer.getHand().printHand(0);
+        //m_Computer.getHand().printHand(0);
         return m_Computer.getHand().getM_PlayerTiles();
     }
 

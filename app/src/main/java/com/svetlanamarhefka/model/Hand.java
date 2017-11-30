@@ -16,7 +16,7 @@ public class Hand implements Serializable {
     *  was in my original code
     */
     private Vector<Domino> m_PlayerTiles;
-    private static Vector<Domino> m_SortedHand = new Vector<Domino>();
+    private static Vector<Domino> m_SortedHand;
     private int m_EngineIndex;
 
     /**
@@ -156,32 +156,78 @@ public class Hand implements Serializable {
     }
 
     /**
-     * THIS FUNCTION MAY NEVER NEED TO BE USED
-     * @return
-     */
-    public Vector<Domino> getM_SortedTiles(Vector<Domino> a_InVector)
-    {
-        m_SortedHand.removeAllElements();
-        m_SortedHand = a_InVector;
-        sortItems(m_SortedHand);
-        return m_SortedHand;
-    }
-
-    /**
-     * Sorts the the boneyard for easier printing and visualization
+     * Sorts the hand based on several conditions
      * @param a_InVector --> Vector that will be sorted by the function
      */
-    public void sortItems(Vector<Domino> a_InVector)
+    public Vector<Domino> sortBasedLeft(Vector<Domino> a_InVector)
     {
-        Collections.sort(a_InVector, new Comparator()
+        m_SortedHand = new Vector<Domino>();
+        m_SortedHand = a_InVector;
+
+        Collections.sort(m_SortedHand, new Comparator()
         {
             // New comparison operator
             public int compare(Object dom1, Object dom2)
             {
-                Integer left1 = ((Domino)dom1).getM_leftSide();
-                Integer left2 = ((Domino)dom2).getM_leftSide();
-                int resultComp = left1.compareTo(left2);
-                // This sorts according to the left hand side
+                int resultComp;
+
+                // This will sort by the right hand side
+                Integer right1 = ((Domino)dom1).getM_rightSide();
+                Integer right2 = ((Domino)dom2).getM_rightSide();
+                //return right1.compareTo(right2);
+                resultComp = right2.compareTo(right1);
+
+                if(resultComp != 0)
+                {
+                    return resultComp;
+                }
+                else
+                {
+                    // This sorts according to the left hand side
+                    Integer left1 = ((Domino)dom1).getM_leftSide();
+                    Integer left2 = ((Domino)dom2).getM_leftSide();
+                    resultComp = left1.compareTo(left2);
+
+                    if(resultComp != 0)
+                    {
+                        return resultComp;
+                    }
+                    else
+                    {
+                        // This will sort by the right hand side
+                        Integer sum1 = ((Domino)dom1).tileSum();
+                        Integer sum2 = ((Domino)dom2).tileSum();
+                        //return right1.compareTo(right2);
+                        return sum2.compareTo(sum1);
+                    }
+                }
+            }
+        });
+
+        return m_SortedHand;
+    }
+
+    /**
+     * Sorts the hand based on several conditions
+     * @param a_InVector --> Vector that will be sorted by the function
+     */
+    public Vector<Domino> sortBasedRight(Vector<Domino> a_InVector)
+    {
+        m_SortedHand = new Vector<Domino>();
+        m_SortedHand = a_InVector;
+
+        Collections.sort(m_SortedHand, new Comparator()
+        {
+            // New comparison operator
+            public int compare(Object dom1, Object dom2)
+            {
+                int resultComp;
+                // This will sort by the right hand side
+                Integer sum1 = ((Domino)dom1).tileSum();
+                Integer sum2 = ((Domino)dom2).tileSum();
+                //return right1.compareTo(right2);
+                resultComp = sum2.compareTo(sum1);
+
                 if(resultComp != 0)
                 {
                     return resultComp;
@@ -191,12 +237,54 @@ public class Hand implements Serializable {
                     // This will sort by the right hand side
                     Integer right1 = ((Domino)dom1).getM_rightSide();
                     Integer right2 = ((Domino)dom2).getM_rightSide();
-                    return right1.compareTo(right2);
+                    //return right1.compareTo(right2);
+                    resultComp = right2.compareTo(right1);
+
+                    if(resultComp != 0)
+                    {
+                        return resultComp;
+                    }
+                    else
+                    {
+                        // This sorts according to the left hand side
+                        Integer left1 = ((Domino)dom1).getM_leftSide();
+                        Integer left2 = ((Domino)dom2).getM_leftSide();
+                        return left2.compareTo(left1);
+                    }
+                }
+            }
+        });
+
+        return m_SortedHand;
+    }
+
+    public void sortForDisplay(Vector<Domino> a_InVector) {
+        m_SortedHand = new Vector<Domino>();
+        m_SortedHand = a_InVector;
+
+        Collections.sort(m_SortedHand, new Comparator()
+        {
+            // New comparison operator
+            public int compare(Object dom1, Object dom2)
+            {
+                // This will sort by the right hand side
+                Integer right1 = ((Domino)dom1).getM_rightSide();
+                Integer right2 = ((Domino)dom2).getM_rightSide();
+                int resultComp = right1.compareTo(right2);
+                // This sorts according to the left hand side
+                if(resultComp != 0)
+                {
+                    return resultComp;
+                }
+                else
+                {
+                    Integer left1 = ((Domino)dom1).getM_leftSide();
+                    Integer left2 = ((Domino)dom2).getM_leftSide();
+                    return left1.compareTo(left2);
                 }
             }
         });
     }
-
 
     public int getHandTotal()
     {
