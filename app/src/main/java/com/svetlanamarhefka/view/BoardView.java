@@ -30,6 +30,7 @@ public class BoardView extends View {
 
     public void displayBoard(Vector<Domino> a_InDomino, LinearLayout a_InLayout)
     {
+
         GridLayout.LayoutParams gridLayoutParam;
 
         int row = 0, col = 0;

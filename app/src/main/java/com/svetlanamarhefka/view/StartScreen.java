@@ -4,16 +4,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.svetlanamarhefka.R;
 import com.svetlanamarhefka.model.Round;
 import com.svetlanamarhefka.model.Tournament;
+import com.svetlanamarhefka.model.player.Computer;
+import com.svetlanamarhefka.model.player.Human;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.io.InputStream;
 
 /****************************************************************
  * Name:    Svetlana Marhefka                                   *
@@ -201,21 +211,85 @@ public class StartScreen extends AppCompatActivity {
     {
         System.out.print("loadGame button pressed!\n");
 
-        //Intent intent = new Intent(this, MainGame.class);
-        //intent.putExtra("EXTRA_NEWGAME", false);
-        //startActivity(intent);
+        //load the tournament
+        //get the round and start the roundActivity
+        AlertDialog.Builder alert = new AlertDialog.Builder(StartScreen.this);
+        alert.setTitle("Select a game");
 
-        m_Tournament.setM_TourScore(150);
-        m_Tournament.setM_RoundNumber(6);
-        m_Tournament.setM_PlayerName("Lana");
-        m_Tournament.createPlayers();
-        startNewRound(m_Tournament.createNewRound());
+        final File[] files = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return true;
+            }
+        });
+
+
+        String[] items = new String[files.length];
+        for (int i = 0; i < files.length; ++i) {
+            items[i] = files[i].getName();
+        }
+
+        alert.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ListView lw = ((AlertDialog) dialog).getListView();
+                String fileName = (String) lw.getAdapter().getItem(which);
+
+                //de-serialize and create round;
+                String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + fileName;
+                try {
+                    InputStream t_InputFile = new FileInputStream(filePath);
+                    startNewRound(m_Tournament.loadGame(t_InputFile));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        alert.show();
     }
 
     private void startNewRound(Round a_InRound)
     {
         Intent intent = new Intent(this, MainGame.class);
         intent.putExtra("EXTRA_ROUND", a_InRound);
-        startActivity(intent);
+        intent.putExtra("COMP_TURN", a_InRound.getPrevPass());
+        startActivityForResult(intent, 1);
+    }
+
+    protected void onActivityResult(int a_InRequestCode, int a_InResultCode, Intent a_InData)
+    {
+        if (a_InResultCode == RESULT_CANCELED) {
+            recreate();
+            return;
+        }
+
+        // Get the human score from the last round
+        int t_HumanScore = a_InData.getIntExtra("HUMAN_SCORE", 0);
+        // Get the computer score from the last round
+        int t_ComScore = a_InData.getIntExtra("COM_SCORE", 0);
+
+        // Set the overall score for the human
+        m_Tournament.setPlayerScore(Human.class, t_HumanScore);
+        // Set the overall score for the computer class
+        m_Tournament.setPlayerScore(Computer.class, t_ComScore);
+
+        // If the overall game is over
+        if(m_Tournament.isOver())
+        {
+            AlertDialog.Builder t_EndTournament = new AlertDialog.Builder(StartScreen.this);
+            t_EndTournament.setTitle("Tournament Ended");
+            t_EndTournament.setMessage(m_Tournament.getGameWinnerAndScore())
+                    .setPositiveButton("I'm Done with This", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+            t_EndTournament.create().show();
+        }
+        else
+        {
+            // Create a new round
+            startNewRound(m_Tournament.createNewRound());
+        }
     }
 }

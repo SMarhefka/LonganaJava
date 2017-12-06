@@ -80,22 +80,6 @@ public class Domino implements Serializable {
         return (m_leftSide == m_rightSide);
     }
 
-
-    /* Will keep just in case
-    public boolean isEqual(Domino a_InDomino)
-    {
-        if((m_leftSide == a_InDomino.getM_leftSide()) && (m_rightSide == a_InDomino.getM_rightSide()))
-        {
-            return true;
-        }
-        else if((m_rightSide == a_InDomino.getM_rightSide()) && (m_leftSide == a_InDomino.getM_leftSide()))
-        {
-            return true;
-        }
-        return false;
-    }
-    */
-
     /**
      * Fuction that returns an integer with the total sum of the tile
      * @return returns the total sum of the tile

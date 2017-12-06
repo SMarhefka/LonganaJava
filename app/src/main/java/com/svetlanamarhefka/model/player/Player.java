@@ -3,7 +3,9 @@ package com.svetlanamarhefka.model.player;
 import com.svetlanamarhefka.model.Board;
 import com.svetlanamarhefka.model.Domino;
 import com.svetlanamarhefka.model.Hand;
-import com.svetlanamarhefka.model.PlayFunctions;
+import com.svetlanamarhefka.util.PlayFunctions;
+import com.svetlanamarhefka.util.PlayerMove;
+import com.svetlanamarhefka.util.Side;
 
 import java.io.Serializable;
 import java.util.Vector;
@@ -23,15 +25,17 @@ public class Player implements Serializable {
     protected Hand m_CurrentHand;
     // The name of the player.
     protected String playerName;
-    // The sorted hand
+    // Vector of possible moves that can be made
     Vector<PlayerMove> m_PossibleMoves;
-
+    // Class that contains the functions for the computer AI
     private PlayFunctions m_PlayFunctions;
 
     // The defaultSide for the given player
     Side m_DefaultSide;
     // The non-default side for the given player
     Side m_OtherSide;
+
+    String bestMove;
 
 
     public Player()
@@ -52,12 +56,17 @@ public class Player implements Serializable {
     }
 
     /**
-     *
+     * Getter function that returns the players current score
      * @return
      */
     public int getM_PlayerScore()
     {
         return m_PlayerScore;
+    }
+
+    public void setM_PlayerScore(int a_InPlayerScore)
+    {
+        m_PlayerScore = a_InPlayerScore;
     }
 
     /**
@@ -68,6 +77,25 @@ public class Player implements Serializable {
     {
         return m_CurrentHand;
     }
+
+    public void setM_CurrentHand(Hand a_InPlayerHand)
+    {
+        m_CurrentHand = a_InPlayerHand;
+    }
+
+    public String saveHand()
+    {
+        return m_CurrentHand.toString();
+    }
+
+    /**
+     * This will clear the players hand
+     */
+    public void clearHand()
+    {
+        m_CurrentHand.clearHand();
+    }
+
 
     public boolean playDomino(int a_InDomIndex, Board a_InBoard, Side a_InSide) {
 
@@ -153,7 +181,7 @@ public class Player implements Serializable {
         // If the vector has no moves return nothing
         if(m_PossibleMoves.isEmpty())
         {
-            // return null;
+            // return nothing;
             return null;
         }
         // Otherwise sort based on the tile sum
@@ -168,31 +196,45 @@ public class Player implements Serializable {
             int t_RightSide = m_PlayFunctions.bestSideToPlay(new PlayerMove(testMove.getM_Domino(), Side.RIGHT),
                     a_InBoard, a_InPrevPassed, this, m_DefaultSide, m_OtherSide);
 
+            // if the left hand side is less than the right hand side
             if (t_LeftSide < t_RightSide)
             {
-                // if the left hand side is less than the right hand side
+                playerMove.append("Best Placement: RIGHT - The domino would decreases the total sum by ");
+                playerMove.append(t_RightSide);
+                playerMove.append("\n");
+                playerMove.append("If Placed On: LEFT - The domino would decreases the total sum by ");
+                playerMove.append(t_LeftSide);
+                playerMove.append("\n");
                 // then that means that the best side to play is on the right
                 testMove.setM_PlaySide(Side.RIGHT);
 
             }
             else if(t_LeftSide > t_RightSide)
             {
+                playerMove.append("Best Placement: LEFT - The domino would decreases the total sum by ");
+                playerMove.append(t_LeftSide);
+                playerMove.append("\n");
+                playerMove.append("If Placed On: RIGHT - The domino would decreases the total sum by ");
+                playerMove.append(t_RightSide);
+                playerMove.append("\n");
                 // if the left hand side is greater than the right hand side
                 // then that means that the best side to play is on the left
                 testMove.setM_PlaySide(Side.LEFT);
             }
             else
             {
+                playerMove.append("Best Placement: ");
+                playerMove.append(m_OtherSide.toString());
+                playerMove.append(" because it has the best chance of causing issues with the other player\n ");
+                playerMove.append("\n");
                 // if the left hand side is greater than the right hand side
                 // then that means that the best side to play is on the left
                 testMove.setM_PlaySide(m_OtherSide);
             }
         }
-
+        bestMove = playerMove.toString();
         return testMove;
     }
-
-
 
     public void takeDomino(Domino a_InDomino)
     {
@@ -200,11 +242,6 @@ public class Player implements Serializable {
         setM_DominoTaken();
         // add the domino to the hand
         m_CurrentHand.addTileToHand(a_InDomino);
-    }
-
-    public void clearHand()
-    {
-        m_CurrentHand.clearHand();
     }
 
     /**

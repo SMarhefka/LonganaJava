@@ -1,0 +1,182 @@
+Sort v1 - Tile Sum -> low to high, left first then right comparision
+  Boneyard Unsorted:
+  3-4 0-1 1-6 0-3 0-6 0-4 1-5 4-4 2-3 0-5 4-5 1-4 2-4 3-3 5-6 0-0 3-5 1-1 0-2 2-5 4-6 2-2 2-6 3-6 6-6 1-2 1-3 5-5
+  Boneyard Sorted:
+  0-0 0-1 1-1 0-2 1-2 0-3 2-2 1-3 0-4 2-3 1-4 0-5 3-3 2-4 1-5 0-6 3-4 2-5 1-6 4-4 3-5 2-6 4-5 3-6 5-5 4-6 5-6 6-6
+
+  Vector<Domino> t_SortedVector;
+  t_SortedVector = a_InVector;
+
+  Collections.sort(t_SortedVector, new Comparator()
+  {
+      // New comparison operator
+      public int compare(Object dom1, Object dom2)
+      {
+          int resultComp;
+          // This will sort by the right hand side
+          Integer sum1 = ((Domino)dom1).tileSum();
+          Integer sum2 = ((Domino)dom2).tileSum();
+          //return right1.compareTo(right2);
+          resultComp = sum1.compareTo(sum2);
+
+          if(resultComp != 0)
+          {
+              return resultComp;
+          }
+          else
+          {
+              // This sorts according to the left hand side
+              Integer left1 = ((Domino)dom1).getM_leftSide();
+              Integer left2 = ((Domino)dom2).getM_leftSide();
+              resultComp = left2.compareTo(left1);
+
+              if(resultComp != 0)
+              {
+                  return resultComp;
+              }
+              else
+              {
+                  // This will sort by the right hand side
+                  Integer right1 = ((Domino)dom1).getM_rightSide();
+                  Integer right2 = ((Domino)dom2).getM_rightSide();
+                  //return right1.compareTo(right2);
+                  return right2.compareTo(right1);
+              }
+          }
+      }
+  });
+
+  return t_SortedVector;
+
+Sort v2 - Exact opposite of v1 --> Best when looking through going right to left:
+  Boneyard Unsorted:
+  2-5 3-6 3-5 2-4 0-4 0-3 1-1 1-2 4-6 1-5 1-3 4-4 0-2 3-4 5-5 2-6 0-0 0-1 2-2 0-6 3-3 4-5 1-6 2-3 0-5 5-6 6-6 1-4
+  Boneyard Sorted:
+  6-6 5-6 4-6 5-5 3-6 4-5 2-6 3-5 4-4 1-6 2-5 3-4 0-6 1-5 2-4 3-3 0-5 1-4 2-3 0-4 1-3 2-2 0-3 1-2 0-2 1-1 0-1 0-0
+
+  Vector<Domino> t_SortedVector;
+  t_SortedVector = a_InVector;
+
+  Collections.sort(t_SortedVector, new Comparator()
+  {
+      // New comparison operator
+      public int compare(Object dom1, Object dom2)
+      {
+          int resultComp;
+          // This will sort by the right hand side
+          Integer sum1 = ((Domino)dom1).tileSum();
+          Integer sum2 = ((Domino)dom2).tileSum();
+          //return right1.compareTo(right2);
+          resultComp = sum2.compareTo(sum1);
+
+          if(resultComp != 0)
+          {
+              return resultComp;
+          }
+          else
+          {
+              // This will sort by the right hand side
+              Integer right1 = ((Domino)dom1).getM_rightSide();
+              Integer right2 = ((Domino)dom2).getM_rightSide();
+              //return right1.compareTo(right2);
+              resultComp = right2.compareTo(right1);
+
+              if(resultComp != 0)
+              {
+                  return resultComp;
+              }
+              else
+              {
+                  // This sorts according to the left hand side
+                  Integer left1 = ((Domino)dom1).getM_leftSide();
+                  Integer left2 = ((Domino)dom2).getM_leftSide();
+                  return left2.compareTo(left1);
+              }
+          }
+      }
+  });
+
+  return t_SortedVector;
+
+Sort v3 - Best when looking through tiles going from left to right:
+  Boneyard Unsorted:
+  4-4 0-5 3-5 2-4 4-5 6-6 1-2 2-3 1-5 3-3 0-4 0-3 0-6 2-5 1-4 1-3 1-1 0-0 2-2 4-6 1-6 5-6 0-1 2-6 3-6 5-5 0-2 3-4
+  Boneyard Sorted:
+  0-6 1-6 2-6 3-6 4-6 5-6 6-6 0-5 1-5 2-5 3-5 4-5 5-5 0-4 1-4 2-4 3-4 4-4 0-3 1-3 2-3 3-3 0-2 1-2 2-2 0-1 1-1 0-0
+
+  Vector<Domino> t_SortedVector;
+  t_SortedVector = a_InVector;
+
+  Collections.sort(t_SortedVector, new Comparator()
+  {
+      // New comparison operator
+      public int compare(Object dom1, Object dom2)
+      {
+          int resultComp;
+
+          // This will sort by the right hand side
+          Integer right1 = ((Domino)dom1).getM_rightSide();
+          Integer right2 = ((Domino)dom2).getM_rightSide();
+          //return right1.compareTo(right2);
+          resultComp = right2.compareTo(right1);
+
+          if(resultComp != 0)
+          {
+              return resultComp;
+          }
+          else
+          {
+              // This sorts according to the left hand side
+              Integer left1 = ((Domino)dom1).getM_leftSide();
+              Integer left2 = ((Domino)dom2).getM_leftSide();
+              resultComp = left1.compareTo(left2);
+
+              if(resultComp != 0)
+              {
+                  return resultComp;
+              }
+              else
+              {
+                  // This will sort by the right hand side
+                  Integer sum1 = ((Domino)dom1).tileSum();
+                  Integer sum2 = ((Domino)dom2).tileSum();
+                  //return right1.compareTo(right2);
+                  return sum2.compareTo(sum1);
+              }
+          }
+      }
+  });
+
+  return t_SortedVector;
+
+Sort v4 - Best when you want to display tiles in order:
+  Boneyard Unsorted:
+  3-3 0-4 4-6 1-3 1-1 1-2 3-4 2-6 0-2 2-4 3-5 0-3 0-6 2-2 3-6 5-5 0-5 4-4 1-6 2-3 0-0 4-5 1-5 2-5 5-6 6-6 1-4 0-1
+  Boneyard Sorted:
+  0-0 0-1 0-2 0-3 0-4 0-5 0-6 1-1 1-2 1-3 1-4 1-5 1-6 2-2 2-3 2-4 2-5 2-6 3-3 3-4 3-5 3-6 4-4 4-5 4-6 5-5 5-6 6-6
+
+  Vector<Domino> t_SortedVector;
+  t_SortedVector = a_InVector;
+  Collections.sort(t_SortedVector, new Comparator()
+  {
+      // New comparison operator
+      public int compare(Object dom1, Object dom2)
+      {
+          Integer left1 = ((Domino)dom1).getM_leftSide();
+          Integer left2 = ((Domino)dom2).getM_leftSide();
+          int resultComp = left1.compareTo(left2);
+          // This sorts according to the left hand side
+          if(resultComp != 0)
+          {
+              return resultComp;
+          }
+          else
+          {
+              // This will sort by the right hand side
+              Integer right1 = ((Domino)dom1).getM_rightSide();
+              Integer right2 = ((Domino)dom2).getM_rightSide();
+              return right1.compareTo(right2);
+          }
+      }
+  });
+  return t_SortedVector;

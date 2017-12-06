@@ -1,5 +1,9 @@
 package com.svetlanamarhefka.model.player;
 
+import com.svetlanamarhefka.model.Board;
+import com.svetlanamarhefka.util.PlayerMove;
+import com.svetlanamarhefka.util.Side;
+
 /****************************************************************
  * Name:    Svetlana Marhefka                                   *
  * Project: Project 2 - Longana                                 *
@@ -32,5 +36,15 @@ public class Human extends Player {
         m_DefaultSide = Side.LEFT;
         // Set the other side as left
         m_OtherSide = Side.RIGHT;
+    }
+
+    public PlayerMove askForHelp(Board a_InBoard, boolean a_InPrevPass)
+    {
+        return playMove(a_InBoard, a_InPrevPass);
+    }
+
+    public String getHelp()
+    {
+        return this.bestMove;
     }
 }

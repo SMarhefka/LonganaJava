@@ -306,6 +306,23 @@ public class Hand implements Serializable {
         m_PlayerTiles.removeAllElements();
     }
 
+    /**
+     * Doing the same thing with the hand as I did with the domino
+     * @return
+     */
+    @Override
+    public String toString()
+    {
+        StringBuilder t_HandString = new StringBuilder();
+        t_HandString.append("Hand: ");
+        for(Domino t_Domino: m_PlayerTiles)
+        {
+            t_HandString.append(t_Domino.toString());
+            t_HandString.append(" ");
+        }
+        return t_HandString.toString();
+    }
+
     public void printHand(int a_PrintType)
     {
         Vector<Domino> tempTiles;

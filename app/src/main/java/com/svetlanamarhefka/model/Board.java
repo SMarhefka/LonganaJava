@@ -1,6 +1,6 @@
 package com.svetlanamarhefka.model;
 
-import com.svetlanamarhefka.model.player.Side;
+import com.svetlanamarhefka.util.Side;
 
 import java.io.Serializable;
 import java.util.Vector;
@@ -13,26 +13,33 @@ import java.util.Vector;
 
 public class Board implements Serializable {
 
-    /* m*/
+    /* m_BoardVector: Vector of Dominoes that represent the tiles already played*/
     private Vector<Domino> m_BoardVector;
+    /* m_EngineValue: the engine value for the current round */
     private int m_EngineValue;
+    /* m_EngineSet: boolean to help determine whether or not the engine value has been placed */
     private boolean m_EngineSet;
     /**
      * Default Constructor
      */
     public Board()
     {
-        this.m_BoardVector = new Vector<Domino>();
+        m_BoardVector = new Vector<Domino>();
         m_EngineSet = false;
     }
 
     /**
      * Overloaded Constructor
      */
-    public Board(Vector<Domino> a_inGameBoard)
+    public void setM_BoardVector(Vector<Domino> a_inGameBoard)
     {
-        m_BoardVector = new Vector<Domino>();
-        this.m_BoardVector = a_inGameBoard;
+        if(a_inGameBoard.isEmpty())
+        {
+            return;
+        }
+        m_EngineSet = false;
+        m_BoardVector.clear();
+        m_BoardVector = a_inGameBoard;
     }
 
     public void setM_EngineValue(int a_InEngine)
@@ -185,6 +192,24 @@ public class Board implements Serializable {
     public Vector<Domino> getM_BoardVector()
     {
         return m_BoardVector;
+    }
+
+    public String toString()
+    {
+        StringBuilder t_BoardString = new StringBuilder();
+        t_BoardString.append("Layout: \n");
+
+        t_BoardString.append("L ");
+
+        for(Domino t_Domino: m_BoardVector)
+        {
+            t_BoardString.append(t_Domino.toString());
+            t_BoardString.append(" ");
+        }
+
+        t_BoardString.append("R");
+
+        return t_BoardString.toString();
     }
 
     // this function will print the curent board to the screen

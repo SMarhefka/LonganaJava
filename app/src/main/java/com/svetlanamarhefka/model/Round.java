@@ -2,9 +2,15 @@ package com.svetlanamarhefka.model;
 
 import com.svetlanamarhefka.model.player.Computer;
 import com.svetlanamarhefka.model.player.Human;
-import com.svetlanamarhefka.model.player.Side;
+import com.svetlanamarhefka.util.PlayerMove;
+import com.svetlanamarhefka.util.Side;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Vector;
 
 /****************************************************************
@@ -28,15 +34,6 @@ public class Round implements Serializable {
 
     private boolean m_PrevPass;
     private boolean m_ComputerTurn;
-
-
-    public Round()
-    {
-        this.m_TourScore = 150;
-        this.m_RoundNumber = 6;
-        this.m_EngineValue = getEngine();
-        this.m_Boneyard = new Boneyard();
-    }
 
     /**
      * This is an overloaded Round
@@ -153,7 +150,7 @@ public class Round implements Serializable {
         Vector<Domino> t_ComHand;
         m_Computer.getHand().printHand(0);
         m_Computer.getHand().resetHand();
-        m_Computer.getHand().sortForDisplay(m_Computer.getHand().getM_PlayerTiles());
+        //m_Computer.getHand().sortForDisplay(m_Computer.getHand().getM_PlayerTiles());
         m_Computer.getHand().printHand(0);
         //m_Computer.getHand().printHand(0);
         return m_Computer.getHand().getM_PlayerTiles();
@@ -165,6 +162,11 @@ public class Round implements Serializable {
         m_Human.getHand().resetHand();
         m_Human.getHand().printHand(0);
         return m_Human.getHand().getM_PlayerTiles();
+    }
+
+    public boolean getPrevPass()
+    {
+        return m_PrevPass;
     }
 
     /**
@@ -188,56 +190,68 @@ public class Round implements Serializable {
      */
     public String firstPlayer()
     {
+        // If the first player has been chosen then we don't need to do anything
         if(m_Board.isM_EngineSet())
         {
             return null;
         }
-
-        StringBuilder t_Log = new StringBuilder();
+        // Create a new String Builder so that we can describe step by step what is going on
+        StringBuilder t_MoveDesc = new StringBuilder();
+        // Have the board know what the correct engine value should be
         m_Board.setM_EngineValue(this.m_EngineValue);
         // While nobody has the engine
-        while (!engineInHand(t_Log))
+        while (!engineInHand(t_MoveDesc))
         {
             // Give a tile to the player
             this.m_Human.getHand().addTileToHand(m_Boneyard.dealTile());
-            t_Log.append("Human drew: " + m_Human.getHand().getTilesAtIndex(
+            //
+            t_MoveDesc.append("Human drew: " + m_Human.getHand().getTilesAtIndex(
                     m_Human.getHand().getSize() - 1) + "\n");
             // Give a tile to the computer
             this.m_Computer.getHand().addTileToHand(m_Boneyard.dealTile());
-            t_Log.append("Computer drew: " + m_Computer.getHand().getTilesAtIndex(
+            t_MoveDesc.append("Computer drew: " + m_Computer.getHand().getTilesAtIndex(
                     m_Computer.getHand().getSize() - 1) + "\n");
         }
-        t_Log.append("------------------------------------");
-        return t_Log.toString();
+        return t_MoveDesc.toString();
     }
 
-    private boolean engineInHand(StringBuilder a_InLog)
+    /**
+     *
+     * @param a_InMoveDesc The stringbuilder that is appending text
+     * @return
+     */
+    private boolean engineInHand(StringBuilder a_InMoveDesc)
     {
         // checks to see if the human has the engine
         if(m_Human.getHand().hasEngine(m_EngineValue))
         {
-            System.out.print("Round: " + m_RoundNumber + " " + m_Human.getPlayerName() +
+            // Print out to the console for testing reasons
+            System.out.print("In Round: " + m_RoundNumber + " " + m_Human.getPlayerName() +
                     " has the engine!\n");
-            a_InLog.append(m_Human.getPlayerName() + " has the engine ( " +
+            // Append it to
+            a_InMoveDesc.append("\n");
+            a_InMoveDesc.append(m_Human.getPlayerName().toUpperCase() + " has the engine ( " +
                     m_EngineValue + "-" + m_EngineValue + " )\n");
 
+            // Sets the computer turn to false so it becomes the humans turn to play
             m_ComputerTurn = false;
+
             return true;
         }
         // check if the computer has the engine
         else if(m_Computer.getHand().hasEngine(m_EngineValue))
         {
-            System.out.print("Round: " + m_RoundNumber + " Computer has the engine!\n");
-            a_InLog.append(m_Computer.getPlayerName() + " has the engine ( " +
-                    m_EngineValue + "-" + m_EngineValue + " )\n");
+            System.out.print("In Round: " + m_RoundNumber + " Computer has the engine!\n");
+            a_InMoveDesc.append("\n");
+            a_InMoveDesc.append(m_Computer.getPlayerName() + " has the engine ( " +
+                    m_EngineValue + "-" + m_EngineValue + " )");
+            // If the computer has the engine it will automatically play it
             m_Computer.playDomino(m_Computer.getHand().getM_EngineIndex(), m_Board, Side.RIGHT);
             m_ComputerTurn = false;
             return true;
         }
         return false;
     }
-
-
 
     /**
      *
@@ -256,6 +270,10 @@ public class Round implements Serializable {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     private String computerPlay()
     {
         if(!m_Computer.play(m_Board, m_PrevPass))
@@ -272,8 +290,9 @@ public class Round implements Serializable {
             Domino t_Domino = m_Boneyard.dealTile();
             // Place it into the computer hand
             m_Computer.takeDomino(t_Domino);
+            m_Computer.setM_CurrentHand(m_Computer.getHand());
             // If the computer still can't make a move
-            if (!m_Computer.play(m_Board, m_PrevPass))
+            if (m_Computer.play(m_Board, m_PrevPass) == false)
             {
                 // pass the turn
                 passTurn();
@@ -282,12 +301,18 @@ public class Round implements Serializable {
 
             resetPass();
             m_Computer.resetDrawDomino();
-            return "Computer made it's move";
+            return m_Computer.getBestMove().toString();
         }
         resetPass();
-        return "Computer is done...now for the human move";
+        return m_Computer.getBestMove().toString();
     }
 
+    /**
+     *
+     * @param a_InDomino
+     * @param a_InSide
+     * @return
+     */
     public String humanPlay(Domino a_InDomino, Side a_InSide)
     {
         if(!m_Human.play(m_Human.getHand().getDomIndex(a_InDomino), m_Board, a_InSide, m_PrevPass))
@@ -301,21 +326,32 @@ public class Round implements Serializable {
         return null;
     }
 
-    private boolean canHumanPass()
+    /**
+     *
+     * @return
+     */
+    public boolean canHumanPass()
     {
         if(m_Human.validMove(m_Board, m_PrevPass))
         {
             return false;
         }
-        if(m_Human.isM_DominoTaken())
+        if(!m_Human.isM_DominoTaken())
         {
+            System.out.print(m_Human.isM_DominoTaken());
             return false;
         }
+        System.out.print("Player has drawn: " + m_Human.isM_DominoTaken());
         m_Human.resetDrawDomino();
+        passTurn();
         m_ComputerTurn = true;
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     public Domino humanDrawTile()
     {
         // if the human doesn't have any valid moves
@@ -346,7 +382,31 @@ public class Round implements Serializable {
         return t_Domino;
     }
 
+    public String getHelp()
+    {
+        PlayerMove bestMove = m_Human.askForHelp(m_Board, m_PrevPass);
+        // if it is null
+        if (bestMove == null)
+        {
+            return null;
+        }
+        else
+        {
+            StringBuilder t_Suggestion = new StringBuilder();
+            t_Suggestion.append("Best Play is: ");
+            t_Suggestion.append(m_Human.askForHelp(m_Board, m_PrevPass).toString());
+            t_Suggestion.append("\n");
+            t_Suggestion.append("Strategy: ");
+            t_Suggestion.append("\n");
+            t_Suggestion.append(m_Human.getHelp());
 
+            return  t_Suggestion.toString();
+        }
+    }
+
+    /**
+     *
+     */
     private void passTurn()
     {
         m_PrevPass = true;
@@ -354,10 +414,113 @@ public class Round implements Serializable {
     }
 
 
+    /**
+     * resets
+     */
     private void resetPass()
     {
         m_PrevPass = false;
         m_PassCount = 0;
+    }
+
+    public void LoadRound(BufferedReader reader)
+    {
+        try
+        {
+            // Read in blank lines
+            reader.readLine();
+            reader.readLine();
+
+            //computer hand
+            String line = reader.readLine();
+            String[] lineData = line.split(":");
+            Vector<Domino> t_ComHand = getDominoesFromFile(lineData[1].toString());
+            m_Computer.setM_CurrentHand(new Hand(t_ComHand));
+
+
+            //computer score
+            line = reader.readLine();
+            lineData = line.split(":");
+            int t_ComScore = Integer.parseInt(lineData[1].trim());
+            m_Computer.setM_PlayerScore(t_ComScore);
+
+            // Read in blank lines
+            reader.readLine();
+            reader.readLine();
+
+            //human hand
+            line = reader.readLine();
+            lineData = line.split(":");
+            Vector<Domino> t_HumanHand = getDominoesFromFile(lineData[1]);
+            m_Human.setM_CurrentHand(new Hand(t_HumanHand));
+
+            //human score
+            line = reader.readLine();
+            lineData = line.split(":");
+            int t_HumanScore = Integer.parseInt(lineData[1].trim());
+            m_Human.setM_PlayerScore(t_HumanScore);
+
+            // Read in blank lines
+            reader.readLine();
+            reader.readLine();
+
+            line = reader.readLine().trim();
+            line = line.substring(1, line.length() - 2);
+            Vector<Domino> t_BoardVector = getDominoesFromFile(line);
+            m_Board.setM_BoardVector(t_BoardVector);
+
+            // Read in blank lines
+            reader.readLine();
+            reader.readLine();
+
+            line = reader.readLine().trim();
+            Vector<Domino> t_BoneYardVector = getDominoesFromFile(line);
+            Collections.reverse(t_BoneYardVector);
+            m_Boneyard.setM_TilesBoneYard(t_BoneYardVector);
+
+            reader.readLine();
+
+            line = reader.readLine();
+            lineData = line.split(":");
+            lineData[1] = lineData[1].trim().toUpperCase();
+            if (lineData[1].equals("YES"))
+            {
+                m_PrevPass = true;
+            }
+            else if (lineData[1].equals("NO"))
+            {
+                m_PrevPass = false;
+            }
+
+            reader.readLine();
+
+            line = reader.readLine();
+            lineData = line.split(":");
+            lineData[1] = lineData[1].trim().toUpperCase();
+            if (lineData[1].equals("HUMAN")) m_ComputerTurn = false;
+            else if (lineData[1].equals("COMPUTER")) m_ComputerTurn = true;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Vector<Domino> getDominoesFromFile(String a_InString) {
+        if (a_InString.trim().equals(""))
+        {
+            return new Vector<>();
+        }
+
+        String[] dominoInString = a_InString.trim().split(" ");
+        // Create a new vector of dominoes
+        Vector<Domino> t_NewDominoes = new Vector<>();
+        for (String t_InString : dominoInString)
+        {
+            // Trim the string
+            t_InString = t_InString.trim();
+            t_NewDominoes.add(new Domino(Character.getNumericValue(t_InString.charAt(0)), Character.getNumericValue(t_InString.charAt(2))));
+        }
+        return t_NewDominoes;
     }
 
     /**
@@ -373,44 +536,141 @@ public class Round implements Serializable {
      * @return String including the round winner and respective player scores
      */
     public String getRoundWinnerAndScore() {
-        StringBuilder scores = new StringBuilder();
+        StringBuilder t_RoundEnd = new StringBuilder();
         //holds sum of all tiles for human
         int l_HumanTotal = m_Human.getHand().getHandTotal();
         //holds sum of all tiles for computer
         int l_CompTotal = m_Computer.getHand().getHandTotal();
-        scores.append("Computer Score: ").append(l_HumanTotal)
-                .append("\nHuman Score: ").append(l_CompTotal).append("\n");
+        t_RoundEnd.append("Computer Score: ");
+        t_RoundEnd.append(l_CompTotal);
+        t_RoundEnd.append("\n");
+        t_RoundEnd.append("Human Score: ");
+        t_RoundEnd.append(l_HumanTotal).append("\n");
 
-        int score = 0;
+        int t_Score = 0;
         //if human emptied the hand , he wins
         if (m_Human.getHand().isEmpty()) {
-            scores.append("Human");
+            t_RoundEnd.append("Human");
             m_Human.addToScore(l_CompTotal);
-            score = l_CompTotal;
+            t_Score = l_CompTotal;
         }
         //if computer emptied the hand, computer wins
         else if (m_Computer.getHand().isEmpty()) {
-            scores.append("Computer");
+            t_RoundEnd.append("Computer");
             m_Computer.addToScore(l_HumanTotal);
-            score = l_HumanTotal;
+            t_Score = l_HumanTotal;
         }
         //if human has less sum than computer, human wins
         else if (l_HumanTotal < l_CompTotal) {
-            scores.append("Human");
+            t_RoundEnd.append("Human");
             m_Human.addToScore(l_CompTotal);
-            score = l_CompTotal;
+            t_Score = l_CompTotal;
         }
         //if computer has less sum, computer wins
         else if (l_HumanTotal > l_CompTotal) {
-            scores.append("Computer");
+            t_RoundEnd.append("Computer");
             m_Computer.addToScore(l_HumanTotal);
-            score = l_HumanTotal;
+            t_Score = l_HumanTotal;
         }
         //if equal, its a draw
         else {
-            scores.append("The round ended with a draw!");
-            return scores.toString();
+            t_RoundEnd.append("The round ended with a draw!");
+            return t_RoundEnd.toString();
         }
-        return scores.append(" won this round with a score of ").append(score).toString();
+        return t_RoundEnd.append(" won this round with a score of ").append(t_Score).toString();
     }
+
+    public String gameInformation()
+    {
+        // Use stringbuilder so that we can append multiple things
+        StringBuilder t_SaveText = new StringBuilder();
+
+        t_SaveText.append("Tournament Score: ");
+        t_SaveText.append(m_TourScore);
+        t_SaveText.append("\n");
+
+        t_SaveText.append("Round No.: ");
+        t_SaveText.append(m_RoundNumber);
+        t_SaveText.append("\n\n");
+
+        t_SaveText.append("Computer: ");
+        t_SaveText.append("\n");
+
+        t_SaveText.append("\t");
+        t_SaveText.append(m_Computer.saveHand());
+        t_SaveText.append("\n");
+        t_SaveText.append("\t");
+        t_SaveText.append("Score: ");
+        t_SaveText.append(m_Computer.getM_PlayerScore());
+        t_SaveText.append("\n").append("\n");
+
+        t_SaveText.append(m_Human.getPlayerName()).append(": ");
+        t_SaveText.append("\n");
+        t_SaveText.append("\t");
+        t_SaveText.append(m_Human.saveHand());
+        t_SaveText.append("\n");
+        t_SaveText.append("\t");
+        t_SaveText.append("Score: ");
+        t_SaveText.append(m_Human.getM_PlayerScore());
+        t_SaveText.append("\n").append("\n");
+
+        t_SaveText.append(m_Board.toString());
+        t_SaveText.append("\n").append("\n");
+
+        t_SaveText.append(m_Boneyard.toString());
+        t_SaveText.append("\n").append("\n");
+
+        if(m_Board.getM_BoardVector().isEmpty())
+        {
+            t_SaveText.append("Previous Player Passed: ");
+            t_SaveText.append("\n\n");
+            t_SaveText.append("Next Player: ");
+            t_SaveText.append("\n");
+        }
+        else
+        {
+            t_SaveText.append("Previous Player Passed: ");
+            if(m_PrevPass)
+            {
+                t_SaveText.append("Yes");
+            }
+            else
+            {
+                t_SaveText.append("No");
+            }
+            t_SaveText.append("\n\n");
+
+            t_SaveText.append("Next Player: ");
+            if(m_ComputerTurn)
+            {
+                t_SaveText.append("Computer");
+            }
+            else
+            {
+                t_SaveText.append(m_Human.getPlayerName());
+            }
+            t_SaveText.append("\n");
+        }
+        return t_SaveText.toString();
+    }
+
+    public boolean saveGame(File a_InFile, String a_InGameInfo)
+    {
+        StringBuilder t_GameInfo = new StringBuilder();
+        t_GameInfo.append(a_InGameInfo);
+
+        try
+        {
+            FileOutputStream t_OutputStream = new FileOutputStream(a_InFile);
+            t_OutputStream.write(t_GameInfo.toString().getBytes());
+            t_OutputStream.close();
+            return true;
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

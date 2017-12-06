@@ -2,7 +2,6 @@ package com.svetlanamarhefka.model;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Vector;
 
 
@@ -37,11 +36,10 @@ public class Boneyard implements Serializable {
      * Overload constructor
      * @param a_InBoneyard --> takes in a Vector of Domino objects
      */
-    public Boneyard(Vector<Domino> a_InBoneyard)
+    public void setM_TilesBoneYard(Vector<Domino> a_InBoneyard)
     {
-        this.m_LastIndex = 0;
         // initialize unusedTiles
-        this.m_TilesBoneYard = new Vector<Domino>();
+        m_TilesBoneYard = new Vector<Domino>();
         m_TilesBoneYard = a_InBoneyard;
     }
 
@@ -112,35 +110,17 @@ public class Boneyard implements Serializable {
         return m_TilesBoneYard.isEmpty();
     }
 
-    /**
-     * Sorts the the boneyard for easier printing and visualization
-     * @param a_InVector --> Vector that will be sorted by the function
-     */
-    public void sortItems(Vector<Domino> a_InVector)
+    public String toString()
     {
+        StringBuilder t_BoneYardString = new StringBuilder();
+        t_BoneYardString.append("Boneyard: \n");
 
-        Collections.sort(a_InVector, new Comparator()
+        for(Domino t_Domino: m_TilesBoneYard)
         {
-            // New comparison operator
-            public int compare(Object dom1, Object dom2)
-            {
-                Integer left1 = ((Domino)dom1).getM_leftSide();
-                Integer left2 = ((Domino)dom2).getM_leftSide();
-                int resultComp = left1.compareTo(left2);
-                // This sorts according to the left hand side
-                if(resultComp != 0)
-                {
-                    return resultComp;
-                }
-                else
-                {
-                    // This will sort by the right hand side
-                    Integer right1 = ((Domino)dom1).getM_rightSide();
-                    Integer right2 = ((Domino)dom2).getM_rightSide();
-                    return right1.compareTo(right2);
-                }
-            }
-        });
+            t_BoneYardString.append(t_Domino.toString());
+            t_BoneYardString.append(" ");
+        }
+        return t_BoneYardString.toString();
     }
 
     /**
@@ -148,17 +128,8 @@ public class Boneyard implements Serializable {
      */
     public void printBoneyard(int a_PrintType)
     {
-        switch (a_PrintType)
-        {
-            // If we want the boneyard to be sorted
-            case 1:
-                // Sort the boneyard
-                sortItems(m_TilesBoneYard);
-                System.out.print("Boneyard Sorted\n");
-                break;
-            default:
-                System.out.print("Boneyard\n");
-        }
+
+        System.out.print("Boneyard\n");
         String fullString = "";
 
         for(int itemVal = 0; itemVal < m_TilesBoneYard.size(); itemVal++)
@@ -176,6 +147,7 @@ public class Boneyard implements Serializable {
             super("The boneyard is empty");
         }
     }
+
 
     /******************************CAUTION: TESTING AREA**********************************/
     /**

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,8 +17,11 @@ import android.widget.Toast;
 import com.svetlanamarhefka.R;
 import com.svetlanamarhefka.model.Domino;
 import com.svetlanamarhefka.model.Round;
-import com.svetlanamarhefka.model.player.Side;
+import com.svetlanamarhefka.model.player.Computer;
+import com.svetlanamarhefka.model.player.Human;
+import com.svetlanamarhefka.util.Side;
 
+import java.io.File;
 import java.util.Vector;
 
 /****************************************************************
@@ -38,6 +42,8 @@ public class MainGame extends AppCompatActivity {
     private Round m_Round;
     private Context m_Context;
 
+    private boolean m_InComTurn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +53,7 @@ public class MainGame extends AppCompatActivity {
         Intent l_intent = getIntent();
         // Gets the round from the Start Screen Activity
         m_Round = (Round) l_intent.getSerializableExtra("EXTRA_ROUND");
+        m_InComTurn = (Boolean) l_intent.getSerializableExtra("COMP_TURN");
         m_Context = this.getApplicationContext();
         // Get the views needed to display to the board
         m_DominoView = new DominoView(m_Context);
@@ -55,13 +62,30 @@ public class MainGame extends AppCompatActivity {
         m_ComHandView = new ComputerView(m_Context);
         m_HumanHandView = new HumanView(m_Context, this);
 
+        Toast.makeText(MainGame.this, "Starting Game", Toast.LENGTH_LONG).show();
         // initialize the layout
         initLayout();
-        Toast.makeText(MainGame.this, "Ready to Distribute Tiles", Toast.LENGTH_LONG).show();
-        // distribute hands
-        distributeHands();
-        // get the first player
-        getFirstPlayer();
+
+        if(m_Round.getHumanHand().isEmpty())
+        {
+            // distribute hands
+            distributeHands();
+            if(m_Round.getBoard().isEmpty())
+            {
+                // get the first player
+                getFirstPlayer();
+            }
+        }
+        else if (m_Round.getBoard().isEmpty())
+        {
+            // get the first player
+            getFirstPlayer();
+        }
+
+        updateLayout();
+
+        setNextTurn();
+
     }
 
     private void initLayout()
@@ -75,11 +99,15 @@ public class MainGame extends AppCompatActivity {
 
         // Display the computer score to the screen
         TextView l_ComputerScore = findViewById(R.id.t_CScore);
+        l_ComputerScore.setText(String.valueOf((m_Round.getPlayerScore(Computer.class))));
 
         // Display the human name to the main game screen
         TextView l_HumanName = findViewById(R.id.t_HName_1);
         l_HumanName.setText(m_Round.getPlayerName().toString() + " ");
+
         // Display the human score to the screen
+        TextView l_HumanScore = findViewById(R.id.t_HScore);
+        l_HumanScore.setText(String.valueOf((m_Round.getPlayerScore(Human.class))));
 
         // Display the human name to the main game screen
         l_HumanName = findViewById(R.id.t_HName_2);
@@ -109,7 +137,6 @@ public class MainGame extends AppCompatActivity {
                             System.out.print("Continue pressed!");
                         }
                     });
-            //save and quit, normalize the firstPlayer
             messages.show();
         } else {
             setNextTurn();
@@ -120,14 +147,77 @@ public class MainGame extends AppCompatActivity {
     public void drawButtonClick(View view)
     {
         System.out.print("Draw Button Pressed");
+        Domino t_DrawDomino = m_Round.humanDrawTile();
+        if(t_DrawDomino == null)
+        {
+            Toast.makeText(m_Context, "You can't draw another tile\n", Toast.LENGTH_LONG).show();
+            updateLayout();
+        }
+        else
+        {
+            Toast.makeText(m_Context, m_Round.getPlayerName() + " drew: " + t_DrawDomino.toString(), Toast.LENGTH_LONG).show();
+            updateLayout();
+        }
     }
 
+    public void passButtonClick(View view)
+    {
+        System.out.print("Pass Button Pressed");
+        if(m_Round.canHumanPass())
+        {
+            updateLayout();
+            setNextTurn();
+            updateLayout();
+        }
+        else
+        {
+            Toast.makeText(m_Context, "You can't pass.  Look for a move...\n", Toast.LENGTH_LONG).show();
+            updateLayout();
+        }
+    }
+
+    public void getHelpButtonClick(View view)
+    {
+        String bestMove = m_Round.getHelp();
+        if (bestMove == null) {
+            bestMove = "You do not have any valid moves please draw a tile or pass your turn!";
+        }
+        Toast.makeText(MainGame.this, bestMove, Toast.LENGTH_LONG).show();
+    }
+
+    public void saveButtonClick(View view)
+    {
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/TestSave.txt";
+        if (m_Round.saveGame(new File(filePath), m_Round.gameInformation())) {
+            Toast.makeText(MainGame.this, "The game has been saved. GoodBye!", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+    }
 
     private void updateLayout()
     {
         if(m_Round.roundOver())
         {
             System.out.print("Round is over!");
+            AlertDialog.Builder t_EndRoundAlert = new AlertDialog.Builder(this);
+            StringBuilder t_FinalRoundInfo = new StringBuilder();
+            t_FinalRoundInfo.append("Round " + m_Round.getM_RoundNumber() + " Ended!\n");
+            t_FinalRoundInfo.append(m_Round.getRoundWinnerAndScore());
+            //calculate scores and show here
+            t_EndRoundAlert.setMessage(t_FinalRoundInfo.toString())
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent output = new Intent();
+                            output.putExtra("HUMAN_SCORE",m_Round.getPlayerScore(Human.class));
+                            output.putExtra("COM_SCORE",m_Round.getPlayerScore(Computer.class));
+                            setResult(RESULT_OK, output);
+                            finish();
+                        }
+                    });
+            //save and quit, normalize the firstPlayer
+            t_EndRoundAlert.show();
         }
         updateBoard();
         updateBoneyard();
@@ -187,11 +277,10 @@ public class MainGame extends AppCompatActivity {
      * @param a_InSide side to play
      * @return true if move was possible, false if not
      */
-
     protected boolean playRound(Domino a_InDomino, Side a_InSide) {
         String message = m_Round.humanPlay(a_InDomino, a_InSide);
         if (message != null) {
-            Toast toast = Toast.makeText(MainGame.this, message, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(MainGame.this, message, Toast.LENGTH_SHORT);
             toast.show();
             return false;
         }
