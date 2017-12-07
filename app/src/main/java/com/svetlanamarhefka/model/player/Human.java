@@ -45,6 +45,6 @@ public class Human extends Player {
 
     public String getHelp()
     {
-        return this.bestMove;
+        return this.m_ComputerStrategy;
     }
 }

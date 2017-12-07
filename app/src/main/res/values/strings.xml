@@ -7,4 +7,5 @@
     <string name="ask_name_2"><b>Note: If left blank the name will automatically become \'Human\'</b></string>
     <string name="start_game">SO READY TO PLAY!</string>
     <string name="invalid_score">ERROR: The tournament score has to be GREATER than 0\n</string>
+
 </resources>

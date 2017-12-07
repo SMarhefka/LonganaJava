@@ -35,9 +35,10 @@ public class Board implements Serializable {
     {
         if(a_inGameBoard.isEmpty())
         {
+            m_EngineSet = false;
             return;
         }
-        m_EngineSet = false;
+        m_EngineSet = true;
         m_BoardVector.clear();
         m_BoardVector = a_inGameBoard;
     }
@@ -76,7 +77,7 @@ public class Board implements Serializable {
     }
 
     // this function will check to see if the board is empty
-    private boolean boardEmpty()
+    public boolean isEmpty()
     {
         return m_BoardVector.isEmpty() == true;
     }
@@ -138,7 +139,7 @@ public class Board implements Serializable {
     public boolean validDomino(Domino a_InDomino, Side a_InSide)
     {
         // If the board doesn't have the engine
-        if(!m_EngineSet)
+        if(!m_EngineSet )
         {
             return false;
         }

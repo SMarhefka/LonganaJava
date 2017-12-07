@@ -34,8 +34,8 @@ public class Player implements Serializable {
     Side m_DefaultSide;
     // The non-default side for the given player
     Side m_OtherSide;
-
-    String bestMove;
+    // The best strategy in string form
+    String m_ComputerStrategy;
 
 
     public Player()
@@ -44,6 +44,7 @@ public class Player implements Serializable {
         m_DominoTaken = false;
         m_PlayerScore = 0;
         m_PlayFunctions = new PlayFunctions();
+        m_ComputerStrategy = "";
     }
 
     /**
@@ -172,11 +173,14 @@ public class Player implements Serializable {
 
     protected PlayerMove playMove(Board a_InBoard, Boolean a_InPrevPassed)
     {
-        StringBuilder playerMove = new StringBuilder();
+        StringBuilder l_PlayerMove = new StringBuilder();
 
         m_PossibleMoves = new Vector<PlayerMove>();
         // Getting the list of all the possible moves starting at the begging of the hand
-        m_PossibleMoves = m_PlayFunctions.getBestMoves (a_InBoard, a_InPrevPassed, this, m_DefaultSide, m_OtherSide);
+        if(!a_InBoard.isEmpty())
+        {
+            m_PossibleMoves = m_PlayFunctions.getBestMoves (a_InBoard, a_InPrevPassed, this, m_DefaultSide, m_OtherSide);
+        }
 
         // If the vector has no moves return nothing
         if(m_PossibleMoves.isEmpty())
@@ -188,9 +192,18 @@ public class Player implements Serializable {
         m_PossibleMoves = m_PlayFunctions.sortBasedOnScore(m_PossibleMoves);
 
         PlayerMove testMove = m_PossibleMoves.firstElement();
+        l_PlayerMove.append("Place ");
+        l_PlayerMove.append(testMove.getM_Domino().toString());
+        l_PlayerMove.append(" on the ").append(testMove.getM_PlaySide().toString().toUpperCase());
+        l_PlayerMove.append(" which reduced the hand total by: ");
+        l_PlayerMove.append(testMove.getM_Domino().tileSum());
+        l_PlayerMove.append(" points\n");
 
         if(testMove.getM_PlaySide() == Side.EITHER)
         {
+            l_PlayerMove.append(testMove.getM_Domino().toString());
+            l_PlayerMove.append(" can be placed on either side of the board.");
+
             int t_LeftSide = m_PlayFunctions.bestSideToPlay(new PlayerMove(testMove.getM_Domino(), Side.LEFT),
                     a_InBoard, a_InPrevPassed, this, m_DefaultSide, m_OtherSide);
             int t_RightSide = m_PlayFunctions.bestSideToPlay(new PlayerMove(testMove.getM_Domino(), Side.RIGHT),
@@ -199,40 +212,39 @@ public class Player implements Serializable {
             // if the left hand side is less than the right hand side
             if (t_LeftSide < t_RightSide)
             {
-                playerMove.append("Best Placement: RIGHT - The domino would decreases the total sum by ");
-                playerMove.append(t_RightSide);
-                playerMove.append("\n");
-                playerMove.append("If Placed On: LEFT - The domino would decreases the total sum by ");
-                playerMove.append(t_LeftSide);
-                playerMove.append("\n");
+                l_PlayerMove.append("Best Placement: RIGHT - The domino would decreases the total sum by ");
+                l_PlayerMove.append(t_RightSide);
+                l_PlayerMove.append("\n");
+                l_PlayerMove.append("If Placed On: LEFT - The domino would decreases the total sum by ");
+                l_PlayerMove.append(t_LeftSide);
+                l_PlayerMove.append("\n");
                 // then that means that the best side to play is on the right
                 testMove.setM_PlaySide(Side.RIGHT);
 
             }
             else if(t_LeftSide > t_RightSide)
             {
-                playerMove.append("Best Placement: LEFT - The domino would decreases the total sum by ");
-                playerMove.append(t_LeftSide);
-                playerMove.append("\n");
-                playerMove.append("If Placed On: RIGHT - The domino would decreases the total sum by ");
-                playerMove.append(t_RightSide);
-                playerMove.append("\n");
+                l_PlayerMove.append("Best Placement: LEFT - The domino would decreases the total sum by ");
+                l_PlayerMove.append(t_LeftSide);
+                l_PlayerMove.append("\n");
+                l_PlayerMove.append("If Placed On: RIGHT - The domino would decreases the total sum by ");
+                l_PlayerMove.append(t_RightSide);
+                l_PlayerMove.append("\n");
                 // if the left hand side is greater than the right hand side
                 // then that means that the best side to play is on the left
                 testMove.setM_PlaySide(Side.LEFT);
             }
             else
             {
-                playerMove.append("Best Placement: ");
-                playerMove.append(m_OtherSide.toString());
-                playerMove.append(" because it has the best chance of causing issues with the other player\n ");
-                playerMove.append("\n");
+                l_PlayerMove.append("Best Placement: ").append(String.valueOf(m_OtherSide).toUpperCase());
+                l_PlayerMove.append(" because it has the best chance of causing issues for the other player");
+                l_PlayerMove.append("\n");
                 // if the left hand side is greater than the right hand side
                 // then that means that the best side to play is on the left
                 testMove.setM_PlaySide(m_OtherSide);
             }
         }
-        bestMove = playerMove.toString();
+        m_ComputerStrategy = l_PlayerMove.toString();
         return testMove;
     }
 

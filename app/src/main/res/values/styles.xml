@@ -27,7 +27,7 @@
 
     <!-- Main gameplay theme. -->
     <!--<style name="MainScreen" parent="android:Theme.Holo.Light">-->
-    <style name="MainScreen" parent="@style/Theme.AppCompat.DayNight">
+    <style name="MainScreen" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
         <item name="android:windowBackground">@android:color/white</item>
@@ -36,4 +36,12 @@
     <style name="ImageButtonCustom" parent="Widget.AppCompat.ImageButton">
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="CustomAlertTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:background">@android:color/black</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColor">@android:color/holo_blue_bright</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

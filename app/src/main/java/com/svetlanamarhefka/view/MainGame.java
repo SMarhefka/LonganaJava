@@ -66,7 +66,7 @@ public class MainGame extends AppCompatActivity {
         // initialize the layout
         initLayout();
 
-        if(m_Round.getHumanHand().isEmpty())
+        if(m_Round.getPlayerHand(Human.class).isEmpty())
         {
             // distribute hands
             distributeHands();
@@ -128,8 +128,9 @@ public class MainGame extends AppCompatActivity {
         String t_FirstPlayer = m_Round.firstPlayer();
         if (t_FirstPlayer != null) {
             updateLayout();
-            AlertDialog.Builder messages = new AlertDialog.Builder(MainGame.this);
-            messages.setMessage(t_FirstPlayer)
+            AlertDialog.Builder l_FirstPlayer = new AlertDialog.Builder(MainGame.this, R.style.CustomAlertTheme);
+            l_FirstPlayer.setTitle("First Player for Round " + m_Round.getM_RoundNumber());
+            l_FirstPlayer.setMessage(t_FirstPlayer)
                     .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -137,7 +138,7 @@ public class MainGame extends AppCompatActivity {
                             System.out.print("Continue pressed!");
                         }
                     });
-            messages.show();
+            l_FirstPlayer.show();
         } else {
             setNextTurn();
             System.out.print("In the else statement...Everything is okay!");
@@ -150,7 +151,7 @@ public class MainGame extends AppCompatActivity {
         Domino t_DrawDomino = m_Round.humanDrawTile();
         if(t_DrawDomino == null)
         {
-            Toast.makeText(m_Context, "You can't draw another tile\n", Toast.LENGTH_LONG).show();
+            Toast.makeText(m_Context, "You can't draw another tile!", Toast.LENGTH_LONG).show();
             updateLayout();
         }
         else
@@ -165,13 +166,12 @@ public class MainGame extends AppCompatActivity {
         System.out.print("Pass Button Pressed");
         if(m_Round.canHumanPass())
         {
-            updateLayout();
             setNextTurn();
             updateLayout();
         }
         else
         {
-            Toast.makeText(m_Context, "You can't pass.  Look for a move...\n", Toast.LENGTH_LONG).show();
+            Toast.makeText(m_Context, "You can't pass.  Look for a move...", Toast.LENGTH_LONG).show();
             updateLayout();
         }
     }
@@ -179,10 +179,26 @@ public class MainGame extends AppCompatActivity {
     public void getHelpButtonClick(View view)
     {
         String bestMove = m_Round.getHelp();
-        if (bestMove == null) {
+        if (bestMove == null)
+        {
             bestMove = "You do not have any valid moves please draw a tile or pass your turn!";
         }
-        Toast.makeText(MainGame.this, bestMove, Toast.LENGTH_LONG).show();
+        alertBestMove(bestMove);
+    }
+
+    public void alertBestMove(String a_InString)
+    {
+        AlertDialog.Builder l_BestMoveAlert = new AlertDialog.Builder(MainGame.this, R.style.CustomAlertTheme);
+        l_BestMoveAlert.setTitle("Computer's Suggestion");
+        l_BestMoveAlert.setMessage(a_InString)
+                .setPositiveButton("Thank You", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        System.out.print("Continue pressed!");
+                    }
+                });
+        l_BestMoveAlert.show();
     }
 
     public void saveButtonClick(View view)
@@ -200,10 +216,12 @@ public class MainGame extends AppCompatActivity {
         if(m_Round.roundOver())
         {
             System.out.print("Round is over!");
-            AlertDialog.Builder t_EndRoundAlert = new AlertDialog.Builder(this);
+            AlertDialog.Builder t_EndRoundAlert = new AlertDialog.Builder(this, R.style.CustomAlertTheme);
+
             StringBuilder t_FinalRoundInfo = new StringBuilder();
             t_FinalRoundInfo.append("Round " + m_Round.getM_RoundNumber() + " Ended!\n");
             t_FinalRoundInfo.append(m_Round.getRoundWinnerAndScore());
+
             //calculate scores and show here
             t_EndRoundAlert.setMessage(t_FinalRoundInfo.toString())
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -221,8 +239,7 @@ public class MainGame extends AppCompatActivity {
         }
         updateBoard();
         updateBoneyard();
-        updateHumanHand();
-        updateComputerHand();
+        updatePlayerHands();
     }
 
     private void updateBoard()
@@ -243,19 +260,18 @@ public class MainGame extends AppCompatActivity {
         m_BoneView.displayBoneyard(t_Boneyard, l_Boneyard);
     }
 
-    private void updateHumanHand()
+    private void updatePlayerHands()
     {
-        Vector<Domino> t_HumanHand = m_Round.getHumanHand();
-        LinearLayout l_HumanHand = findViewById(R.id.l_HumHand);
-        l_HumanHand.removeAllViews();
-        m_HumanHandView.displayHand(t_HumanHand, l_HumanHand);
-    }
+        Vector<Domino> t_HumanHand = m_Round.getPlayerHand(Human.class);
+        Vector<Domino> t_ComHand = m_Round.getPlayerHand(Computer.class);
 
-    private void updateComputerHand()
-    {
-        Vector<Domino> t_ComHand = m_Round.getComHand();
+        LinearLayout l_HumanHand = findViewById(R.id.l_HumHand);
         LinearLayout l_ComHand = findViewById(R.id.l_ComHand);
+
+        l_HumanHand.removeAllViews();
         l_ComHand.removeAllViews();
+
+        m_HumanHandView.displayHand(t_HumanHand, l_HumanHand);
         m_ComHandView.displayHand(t_ComHand, l_ComHand);
     }
 
@@ -297,8 +313,8 @@ public class MainGame extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder sideSelector = new AlertDialog.Builder(MainGame.this);
-                    sideSelector.setMessage("Select a side to play: ")
+                    AlertDialog.Builder sideSelector = new AlertDialog.Builder(MainGame.this, R.style.CustomAlertTheme);
+                    sideSelector.setMessage("Please select a side to place your tile: ")
                             .setPositiveButton("RIGHT", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)

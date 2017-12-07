@@ -161,8 +161,6 @@ public class Tournament {
 
             m_Round = new Round(m_TourScore, m_RoundNumber, m_Computer, m_Human);
 
-
-
             m_Round.LoadRound(reader);
             m_RoundNumber++;
         } catch (IOException e) {

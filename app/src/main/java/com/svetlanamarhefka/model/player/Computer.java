@@ -26,7 +26,7 @@ public class Computer extends Player {
 
     public String getBestMove()
     {
-        return bestMove;
+        return this.m_ComputerStrategy;
     }
 
     public boolean play(int a_InDominoIndex, Board a_InBoard, Side a_InSide, boolean a_InPrevPassed)
@@ -42,7 +42,7 @@ public class Computer extends Player {
         {
             return false;
         }
-        bestMove = new StringBuilder(bestMove)
+        m_ComputerStrategy = new StringBuilder(m_ComputerStrategy)
                 .append("\nComputer played ")
                 .append(t_PlayMove.getM_Domino().toString())
                 .append(" to the ")

@@ -86,7 +86,7 @@ public class PlayFunctions implements Serializable {
     }
 
     /**
-     *
+     * Reorders tiles based on the bestScore
      * @param a_InVector
      * @return
      */
